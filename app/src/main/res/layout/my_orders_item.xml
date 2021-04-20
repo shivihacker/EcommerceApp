@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="5dp"
+    android:layout_margin="5dp"
+    android:id="@+id/order_item_next"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/order_item_image"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:src="@drawable/realme" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/order_item_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Google Pixel XL 2(Mirror Black,128 GB)"
+            android:textSize="16sp"
+            android:layout_marginLeft="16dp"/>
+        <TextView
+            android:id="@+id/order_item_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cancelled on Feb 06,2020"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="10dp"/>
+    </LinearLayout>
+
+</LinearLayout>

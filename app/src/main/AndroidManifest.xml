@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.ecommerce">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".Activities.CategoryItemListActivity"></activity>
+        <activity android:name=".dashboard.Dashboard" />
+        <activity android:name=".Activities.DeliveryActivity" />
+        <activity android:name=".Activities.OrderDetailsActivity" />
+        <activity android:name=".Activities.CategoryActivity" />
+        <activity android:name=".Activities.EditProfile" />
+        <activity android:name=".Activities.ForgetPassActivity" />
+        <activity android:name=".newAct.NewItem" />
+        <activity android:name=".Activities.ViewMore" />
+        <activity android:name=".Activities.ProfilePage" />
+        <activity android:name=".Activities.Viewallreview" />
+        <activity android:name=".Activities.Reviewitems" />
+        <activity android:name=".Activities.MoreItem" />
+        <activity android:name=".Item" />
+        <activity
+            android:name=".Activities.HomePage"
+            android:label="@string/title_activity_home_page"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activities.LoginPage">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
