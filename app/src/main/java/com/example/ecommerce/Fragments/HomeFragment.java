@@ -203,15 +203,15 @@ public class HomeFragment extends Fragment {
 //                            grid.setAdapter(productAdapter);
                             switch (pos) {
                                 case 0:
-                                    productAdapter = new ProductAdapter(modelProductsList, 0);
+                                    productAdapter = new ProductAdapter(getActivity(),modelProductsList, 0);
                                     grid.setAdapter(productAdapter);
                                     break;
                                 case 1:
-                                    productAdapter = new ProductAdapter(modelProductsList1, 1);
+                                    productAdapter = new ProductAdapter(getActivity(),modelProductsList1, 1);
                                     horizontal.setAdapter(productAdapter);
                                     break;
                                 case 2:
-                                    productAdapter = new ProductAdapter(modelProductsList2, 2);
+                                    productAdapter = new ProductAdapter(getActivity(),modelProductsList2, 2);
                                     vertical.setAdapter(productAdapter);
                                     break;
                             }

@@ -25,6 +25,7 @@ import com.example.ecommerce.Activities.DeliveryActivity;
 import com.example.ecommerce.Adapter.ItemShowViewPageAdap;
 import com.example.ecommerce.Adapter.MyWishlistAdapter;
 import com.example.ecommerce.Helper.Constaints;
+import com.example.ecommerce.Helper.SharedPrefManager;
 import com.example.ecommerce.Model.ModelProducts;
 import com.example.ecommerce.Model.MyWishlistModel;
 import com.example.ecommerce.Model.SliderModel;
@@ -70,6 +71,9 @@ public class DetailsFragment extends Fragment {
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private int counter=0;
+    public DetailsFragment() {
+
+    }
 
     //ItemShowViewPageAdap viewpageAdapter;
 
@@ -111,91 +115,104 @@ public class DetailsFragment extends Fragment {
         if (Constaints.recycler_position==0) {
             Log.d("recycler_position",""+Constaints.recycler_position);
             filterProductData("MOBILES", "mobile_products", Constaints.product_id);
-        }else if (Constaints.recycler_position==1){
+        }
+        else if (Constaints.recycler_position==1){
             Log.d("recycler_position",""+Constaints.recycler_position);
             filterProductData("BEAUTY PRODUCTS", "products", Constaints.product_id);
 
-        }else if (Constaints.recycler_position==2) {
+        }
+        else if (Constaints.recycler_position==2) {
             Log.d("recycler_position",""+Constaints.recycler_position);
             filterProductData("SPORTS", "sports_products", Constaints.product_id);
-        }else if (Constaints.category_recycler_position==3){
+        }
+        else if (Constaints.recycler_position==3){
+
             if (Constaints.mobile_category_position==1){
                 Log.d("mobilebaifbaa",""+Constaints.category_position);
-                categMobProductData(Constaints.category_product_id);
+                categMobProductData(Constaints.product_id);
             }else if (Constaints.category_position==2){
+
                 if (Constaints.category_product_position==0){
-                    categoryProductData("FASHION","fashion_category","mens",Constaints.category_product_id);
+                    categoryProductData("FASHION","fashion_category","mens",Constaints.product_id);
                 }else if (Constaints.category_product_position==1){
-                    categoryProductData("FASHION","fashion_category","womens",Constaints.category_product_id);
+                    categoryProductData("FASHION","fashion_category","womens",Constaints.product_id);
                 }else if (Constaints.category_product_position==2) {
-                    categoryProductData("FASHION", "fashion_category", "kids",Constaints.category_product_id);
+                    categoryProductData("FASHION", "fashion_category", "kids",Constaints.product_id);
                 }
             }else if (Constaints.category_position==3){
+
                 if (Constaints.category_product_position==0){
-                    categoryProductData("ELECTRONICS","electronics_category","tv",Constaints.category_product_id);
+                    categoryProductData("ELECTRONICS","electronics_category","tv",Constaints.product_id);
                 }else if (Constaints.category_product_position==1){
-                    categoryProductData("ELECTRONICS","electronics_category","washingmachine",Constaints.category_product_id);
+                    categoryProductData("ELECTRONICS","electronics_category","washingmachine",Constaints.product_id);
                 }else if (Constaints.category_product_position==2) {
-                    categoryProductData("ELECTRONICS", "electronics_category", "fridge",Constaints.category_product_id);
+                    categoryProductData("ELECTRONICS", "electronics_category", "fridge",Constaints.product_id);
                 }else if (Constaints.category_product_position==3) {
-                    categoryProductData("ELECTRONICS", "electronics_category", "computer_accessories",Constaints.category_product_id);
+                    categoryProductData("ELECTRONICS", "electronics_category", "computer_accessories",Constaints.product_id);
                 }
             }else if (Constaints.category_position==4){
+
                 if (Constaints.category_product_position==0){
-                    categoryProductData("HOME APPLIANCES","home_category","home_hygiene",Constaints.category_product_id);
+                    categoryProductData("HOME APPLIANCES","home_category","home_hygiene",Constaints.product_id);
                 }else if (Constaints.category_product_position==1){
-                    categoryProductData("HOME APPLIANCES","home_category","kitchen",Constaints.category_product_id);
+                    categoryProductData("HOME APPLIANCES","home_category","kitchen",Constaints.product_id);
                 }else if (Constaints.category_product_position==2) {
-                    categoryProductData("HOME APPLIANCES", "home_category", "decorelighting",Constaints.category_product_id);
+                    categoryProductData("HOME APPLIANCES", "home_category", "decorelighting",Constaints.product_id);
                 }
             }else if (Constaints.category_position==5){
+
                 if (Constaints.category_product_position==0){
-                    categoryProductData("GADGETS","gadgets_category","mobile_accessories",Constaints.category_product_id);
+                    categoryProductData("GADGETS","gadgets_category","mobile_accessories",Constaints.product_id);
                 }else if (Constaints.category_product_position==1){
-                    categoryProductData("GADGETS","gadgets_category","smart_watch",Constaints.category_product_id);
+                    categoryProductData("GADGETS","gadgets_category","smart_watch",Constaints.product_id);
                 }else if (Constaints.category_product_position==2) {
-                    categoryProductData("GADGETS", "gadgets_category", "camera",Constaints.category_product_id);
+                    categoryProductData("GADGETS", "gadgets_category", "camera",Constaints.product_id);
                 }else if (Constaints.category_product_position==3) {
-                    categoryProductData("GADGETS", "gadgets_category", "styling devices",Constaints.category_product_id);
+                    categoryProductData("GADGETS", "gadgets_category", "styling devices",Constaints.product_id);
                 }
             }else if (Constaints.category_position==6){
+
                 if (Constaints.category_product_position==0){
-                    categoryProductData("BEAUTY PRODUCTS","Beauty_category","skin_care",Constaints.category_product_id);
+                    categoryProductData("BEAUTY PRODUCTS","Beauty_category","skin_care",Constaints.product_id);
                 }else if (Constaints.category_product_position==1){
-                    categoryProductData("BEAUTY PRODUCTS","Beauty_category","makeup",Constaints.category_product_id);
+                    categoryProductData("BEAUTY PRODUCTS","Beauty_category","makeup",Constaints.product_id);
                 }else if (Constaints.category_product_position==2) {
-                    categoryProductData("BEAUTY PRODUCTS", "Beauty_category", "hair_care",Constaints.category_product_id);
+                    categoryProductData("BEAUTY PRODUCTS", "Beauty_category", "hair_care",Constaints.product_id);
                 }else if (Constaints.category_product_position==3) {
-                    categoryProductData("BEAUTY PRODUCTS", "Beauty_category", "fragnance_product",Constaints.category_product_id);
+                    categoryProductData("BEAUTY PRODUCTS", "Beauty_category", "fragnance_product",Constaints.product_id);
                 }
             }else if (Constaints.category_position==7){
+
                 if (Constaints.category_product_position==0){
-                    categoryProductData("TOYS & GAMES","toys_games_category","for_boys",Constaints.category_product_id);
+                    categoryProductData("TOYS & GAMES","toys_games_category","for_boys",Constaints.product_id);
                 }else if (Constaints.category_product_position==1){
-                    categoryProductData("TOYS & GAMES","toys_games_category","for_girls",Constaints.category_product_id);
+                    categoryProductData("TOYS & GAMES","toys_games_category","for_girls",Constaints.product_id);
                 }else if (Constaints.category_product_position==2) {
-                    categoryProductData("TOYS & GAMES", "toys_games_category", "for_infants",Constaints.category_product_id);
+                    categoryProductData("TOYS & GAMES", "toys_games_category", "for_infants",Constaints.product_id);
                 }
             }else if (Constaints.category_position==8){
+
                 if (Constaints.category_product_position==0){
-                    categoryProductData("SPORTS","sports_category","sports",Constaints.category_product_id);
+                    categoryProductData("SPORTS","sports_category","sports",Constaints.product_id);
                 }else if (Constaints.category_product_position==1){
-                    categoryProductData("SPORTS","sports_category","fitness",Constaints.category_product_id);
+                    categoryProductData("SPORTS","sports_category","fitness",Constaints.product_id);
                 }else if (Constaints.category_product_position==2) {
-                    categoryProductData("SPORTS", "sports_category", "nutrition",Constaints.category_product_id);
+                    categoryProductData("SPORTS", "sports_category", "nutrition",Constaints.product_id);
                 }
             }else if (Constaints.category_position==9){
+
                 if (Constaints.category_product_position==0){
-                    categoryProductData("FURNITURE","furniture_category","wardrobe",Constaints.category_product_id);
+                    categoryProductData("FURNITURE","furniture_category","wardrobe",Constaints.product_id);
                 }else if (Constaints.category_product_position==1){
-                    categoryProductData("FURNITURE","furniture_category","bed_matresses",Constaints.category_product_id);
+                    categoryProductData("FURNITURE","furniture_category","bed_matresses",Constaints.product_id);
                 }else if (Constaints.category_product_position==2) {
-                    categoryProductData("FURNITURE", "furniture_category", "table_chairs",Constaints.category_product_id);
+                    categoryProductData("FURNITURE", "furniture_category", "table_chairs",Constaints.product_id);
                 }else if (Constaints.category_product_position==3) {
-                    categoryProductData("FURNITURE", "furniture_category", "sofas",Constaints.category_product_id);
+                    categoryProductData("FURNITURE", "furniture_category", "sofas",Constaints.product_id);
                 }
             }
         }
+
         newindicator.setViewPager(newviewpage);
 
 //        viewpageAdapter= new ItemShowViewPageAdap(getContext(),list);
@@ -461,6 +478,7 @@ public class DetailsFragment extends Fragment {
                             Log.d("list Images Of:", list.toString());
                             documentSnapshot.getString("p_brand");
                             if (wishlist.contains(Constaints.product_id)){
+                                SharedPrefManager.getInstance(getActivity()).wishListItem(wishlist);
                                 ALREADY_ADDED_TO_WISHLIST=true;
                                 addToWishlist.setImageTintList(ColorStateList.valueOf(Color.RED));
                             }else {
@@ -488,7 +506,7 @@ public class DetailsFragment extends Fragment {
         productData.put("cutted_price", "9000");
         productData.put("coupons_applied", "false");
         productData.put("free_coupons", "2");
-        productData.put("total_amount","0");
+        productData.put("total_amount",""+price);
         DocumentReference _reference = FirebaseFirestore.getInstance().collection("whishlist")
                 .document(Constaints.current_user).collection("my_cart").document(Constaints.product_id);
         _reference.set(productData).isSuccessful();
@@ -497,13 +515,6 @@ public class DetailsFragment extends Fragment {
 
     public void getProduct_AddToWishlist()
     {
-//        HashMap<String, String> productData = new HashMap();
-//        productData.put("list_size","");
-//        productData.put("product_id", Constaints.product_id);
-//          ModelProducts productList = getFilterData(Constaints.product_id);
-//          String p_name  = productList.getName();
-//          String catergory_id = productList.getCaregoryId();
-
         HashMap<String, String> productData = new HashMap();
         productData.put("product_id", mid);
         productData.put("product_title", w_title);

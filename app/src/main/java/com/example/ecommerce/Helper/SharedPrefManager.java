@@ -10,6 +10,10 @@ import android.content.SharedPreferences;
 
 import com.example.ecommerce.Activities.LoginPage;
 import com.example.ecommerce.Model.UserDetails;
+
+import java.util.List;
+import java.util.Set;
+
 public class SharedPrefManager {
 
 //the constants
@@ -21,7 +25,7 @@ private static final String SHARED_PREF_NAME = "Ecommerce";
         private static final String KEY_PASS = "key_pass";
         private static final String KEY_TOTAL_AMOUNT = "key_total_amount";
 
-        private static final String CART_VALUE = "cart_value";
+        private static final String WISHLISTITEM= "key_wishlist_item";
 
 
 private static SharedPrefManager mInstance;
@@ -84,40 +88,35 @@ public void logout() {
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mCtx.startActivity(i);
     }
-
-    public int getCartValue(int i) {
-            SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            int count = 0;
-            count += i;
-            editor.putFloat(CART_VALUE, count);
-            editor.commit();
-            return count;
-    }
     public void setTotalAmount(String totalAmount){
-            SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-
-            editor.putString(KEY_TOTAL_AMOUNT, totalAmount);
-            editor.apply();
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_TOTAL_AMOUNT, totalAmount);
+        editor.apply();
     }
 
-   public String getTotalAmount()
-    {
-            SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-           String value = sharedPreferences.getString("key_total_amount","");
-           return value;
-    }
+   public String getTotalAmount() {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String value = sharedPreferences.getString("key_total_amount","");
+        return value;
+   }
 
 
-        public void deleteItems() {
-                SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.clear();
+   public void deleteItems() {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
 //        editor.apply();
-                editor.commit();
+        editor.commit();
+   }
 
-        }
+   public void wishListItem(List<String> wishlist){
+       SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+       SharedPreferences.Editor editor = sharedPreferences.edit();
+       editor.putStringSet("key_wishlist_item", (Set<String>) wishlist);
+       editor.apply();
+   }
 
 }
 

@@ -1,5 +1,6 @@
 package com.example.ecommerce.Adapter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,9 +32,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     private ArrayList<ModelProducts> modelProductsList;
     //String id;
     int i;
+    Context ctx;
+    List<String> wishlist;
 
-
-    public ProductAdapter(ArrayList<ModelProducts> modelProductsList,int i) {
+    public ProductAdapter(Context ctx,ArrayList<ModelProducts> modelProductsList, int i) {
+        this.ctx = ctx;
         this.modelProductsList = modelProductsList;
         this.i=i;
     }
@@ -119,10 +123,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View itemView) {
+                   // String categoryId=modelProductsList.get(position).getCaregoryId();
                     Log.d("Second Recycler",""+ modelProductsList.get(position).getCaregoryId());
+                   // Log.d("caegoryId",categoryId);
                     Intent intent=new Intent(itemView.getContext(), NewItem.class);
-                    intent.putExtra("category_product_id",modelProductsList.get(position).getCaregoryId());
-                    intent.putExtra("category_recyclerview_position",i);;
+                    intent.putExtra("id",modelProductsList.get(position).getCaregoryId());
+                    intent.putExtra("recyclerview_position",i);
                     itemView.getContext().startActivity(intent);
                 }
             });
@@ -152,13 +158,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 gridAdapterwhishlist.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (ALREADY_ADDED_TO_WISHLIST){
-                            ALREADY_ADDED_TO_WISHLIST=false;
-                            gridAdapterwhishlist.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#9e9e9e")));
-                        }
-                        else {
-                            ALREADY_ADDED_TO_WISHLIST=true;
-                            gridAdapterwhishlist.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+                        if (Constaints.current_user==null){
+
+                        }else {
+                            if (ALREADY_ADDED_TO_WISHLIST) {
+                                ALREADY_ADDED_TO_WISHLIST = false;
+                                gridAdapterwhishlist.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#9e9e9e")));
+                            } else {
+                                ALREADY_ADDED_TO_WISHLIST=true;
+                                gridAdapterwhishlist.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+                                wishlist.add(Constaints.product_id);
+                                Toast.makeText(ctx, "Added to wishlist Successfully", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 });

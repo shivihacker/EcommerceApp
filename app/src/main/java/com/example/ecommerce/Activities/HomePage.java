@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.bumptech.glide.Glide;
 import com.example.ecommerce.Adapter.CategoryAdapter;
 import com.example.ecommerce.Adapter.ViewpageAdapter;
 import com.example.ecommerce.Fragments.HomeFragment;
@@ -24,8 +25,12 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.ecommerce.firedatabase.FireBaseAuthSystem;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -39,6 +44,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -60,16 +66,21 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
     private static final int ORDER_FRAGMENT=2;
     private static final int WISHLIST_FRAGMENT=3;
 
-    private FrameLayout frameLayout;
+    private ImageView nav_imageView;
+    private TextView nav_email;
+    private TextView nav_username;
+    String uid,profile_img;
     private ImageView actionBarLogo;
     private static int currentFragment=-1;
     private NavigationView navigationView;
+    View hView;
     FirebaseFirestore firebaseFirestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
       Toolbar toolbar=(Toolbar) findViewById(R.id.toolbar);
         actionBarLogo =findViewById(R.id.actionbar_logo);
@@ -83,6 +94,30 @@ public class HomePage extends AppCompatActivity implements NavigationView.OnNavi
         toggle.syncState();
 
         navigationView = findViewById(R.id.nav_view);
+        hView=navigationView.getHeaderView(0);
+        nav_username=hView.findViewById(R.id.nav_username);
+        nav_email=hView.findViewById(R.id.nav_email);
+        nav_imageView=hView.findViewById(R.id.nav_imageView);
+        uid = user.getUid();
+        FirebaseFirestore.getInstance().collection("users").document(uid).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (!documentSnapshot.exists()) {
+                            Log.d("Not Exist", "List is empty");
+                            return;
+                        } else {
+                            try {
+                                nav_username.setText(documentSnapshot.get("user_name").toString());
+                                nav_email.setText(documentSnapshot.get("email").toString());
+                                profile_img = documentSnapshot.get("img").toString();
+                            } catch (Exception e) {
+                                Toast.makeText(getApplicationContext(), "Gender field none", Toast.LENGTH_SHORT).show();
+                            }
+                            Glide.with(getApplicationContext()).load(profile_img).optionalCircleCrop().into(nav_imageView);
+                        }
+                    }
+                });
         navigationView.setNavigationItemSelectedListener(this);
 //        navigationView.getMenu().getItem(0).setChecked(true);
 //

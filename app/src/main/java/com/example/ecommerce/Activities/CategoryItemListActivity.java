@@ -87,7 +87,7 @@ public class CategoryItemListActivity extends AppCompatActivity {
         categoryRecycler.setLayoutManager(layoutManager);
         categoryRecycler.setHasFixedSize(true);
         modelProductsList=new ArrayList<>();
-        productAdapter = new ProductAdapter(modelProductsList, 3);
+        productAdapter = new ProductAdapter(getApplication(),modelProductsList, 3);
         categoryRecycler.setAdapter(productAdapter);
         if (mobile_position==1){
             Log.d("mobilebaifbaa",""+Constaints.category_position);
@@ -238,7 +238,9 @@ public class CategoryItemListActivity extends AppCompatActivity {
                                         documentSnapshot.getString("p_brand"),
                                         documentSnapshot.getString("p_review"));
                                     modelProductsList.add(modelProducts);
-                                Log.d("name", modelProducts.getImage());
+                                Log.d("iiiiddd", modelProducts.getCaregoryId());
+                                Log.d("nameeee", modelProducts.getName());
+                                Log.d("priceee", modelProducts.getPrice());
                             }
                             productAdapter.notifyDataSetChanged();
 //                            productAdapter=new ProductAdapter(modelProductsList,0);

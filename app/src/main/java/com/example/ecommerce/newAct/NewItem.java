@@ -53,27 +53,14 @@ public class NewItem extends AppCompatActivity {
         tabLayout=findViewById(R.id.tablayout);
         frameLayout=findViewById(R.id.framelayout);
         ///////value from other intent
-        Intent i = getIntent();
+         Intent i = getIntent();
          id = i.getStringExtra("id");
-
-         Intent catProduct=getIntent();
-         category_prod_id = catProduct.getStringExtra("category_product_id");
-         Log.d("category_product_id11",category_prod_id);
-
-         Intent recyclerintent=getIntent();
-         recyclerviewPosition=recyclerintent.getIntExtra("recyclerview_position",0);
-
-         Intent catRecyPos=getIntent();
-         categoryRecyclerviewPosition=catRecyPos.getIntExtra("category_recyclerview_position",0);
-         Log.d("category_recy_position",""+categoryRecyclerviewPosition);
-
-        Constaints.product_id = id;
-        Constaints.category_product_id=category_prod_id;
+        Intent recyclerintent=getIntent();
+        recyclerviewPosition=recyclerintent.getIntExtra("recyclerview_position",0);
         Constaints.recycler_position=recyclerviewPosition;
-        Constaints.category_recycler_position=categoryRecyclerviewPosition;
-
+        Constaints.product_id = id;
         // filterProductData(id);
-         Log.d("product_id", Constaints.product_id);
+        Log.d("product_id", Constaints.product_id);
 
         Toolbar toolbar=(Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

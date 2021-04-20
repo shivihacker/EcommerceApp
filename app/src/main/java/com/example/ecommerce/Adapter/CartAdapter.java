@@ -13,8 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ecommerce.Activities.LoginPage;
 import com.example.ecommerce.Activities.ProfilePage;
 import com.example.ecommerce.Fragments.MyCartFragment;
 import com.example.ecommerce.Helper.Constaints;
@@ -48,6 +51,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     private List<MyCartModel> myCartModelList;
     Context ctx;
     FirebaseFirestore firebaseFirestore;
+    private FragmentManager fragmentManager;
+    private FragmentTransaction fragmentTransaction;
     String p_id;
     int counter = 0;
 
@@ -106,6 +111,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 Toast.makeText(ctx, "Item Added", Toast.LENGTH_SHORT).show();
                 String c = String.valueOf(count);
                 updatedata(myCartModel.getC_id(),c);
+              //  holder.mycart_number_quantity.setText("" + count);
             }
 
         });
@@ -126,11 +132,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                     count -= 1;
                     holder.mycart_number_quantity.setText("" + count);
                 }
-                holder.mycart_number_quantity.setText(String.valueOf(count));
+//                holder.mycart_number_quantity.setText(String.valueOf(count));
                 Toast.makeText(ctx, "Item Deleted", Toast.LENGTH_SHORT).show();
                 String c = String.valueOf(count);
-
                 updatedata(myCartModel.getC_id(),c);
+              //  holder.mycart_number_quantity.setText(String.valueOf(count));
             }
         });
         holder.mycart_removeItem.setOnClickListener(new View.OnClickListener() {
@@ -141,7 +147,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                     FirebaseFirestore.getInstance().collection("whishlist").document(Constaints.current_user)
                             .collection("my_cart").document(p_id).delete();
                     Toast.makeText(ctx,"Data delete", Toast.LENGTH_SHORT).show();
-
+                    SharedPrefManager.getInstance(ctx).deleteItems();
+                    MyCartFragment myCartFragment = new MyCartFragment();
+                    fragmentTransaction =fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frame, myCartFragment);
+//                fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
                     myCartModelList.remove(position);
                     getCartData();
                     notifyDataSetChanged();
@@ -153,27 +164,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 }
             }
         });
-
-//
-//
-//        holder.mycart_decrease_sign.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                String quantity = holder.mycart_number_quantity.getText().toString();
-//                if (counter == 0) {
-//                    counter = 0;
-//                }
-//                else{
-//                    counter--;
-//                }
-////                mycart_number_quantity.setText(String.valueOf(counter));
-//                String c = String.valueOf(counter);
-//
-//                updatedata(c, myCartModelList.get(position).getC_id());
-//            }
-//        });
-
-
     }
     @Override
     public int getItemCount() {
@@ -207,6 +197,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         edited.put("p_count", counter);
 
             _ref.update(edited).isSuccessful();
+
             getCartData();
     }
 
@@ -237,10 +228,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                                 }
                                 totalSum=String.valueOf(sum);
                                 SharedPrefManager.getInstance(ctx).setTotalAmount(totalSum);
-//                                Intent intent=new Intent(ctx,MyCartFragment.class);
-//                                intent.putExtra("total_amount",totalSum);
-
-                                // totalAmount.setText((int) sum);
                             }
                             DocumentReference _reference = firebaseFirestore.collection("whishlist")
                                     .document(Constaints.current_user).collection("my_cart").document(Constaints.product_id);
