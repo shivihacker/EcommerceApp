@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -39,11 +38,12 @@
                     android:background="?android:attr/listDivider" />
 
                 <LinearLayout
+                    android:id="@+id/get_free_delivery_logo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="100dp">
+                    android:layout_marginBottom="80dp">
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
@@ -56,16 +56,16 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="GET FREE DELIVERY ON ALL PRODUCTS!"
+                            android:text="@string/get_free_delivery_on_all_products"
                             android:textColor="#FF2F3B80"
-                            android:textSize="10dp"
+                            android:textSize="10sp"
                             android:textStyle="bold"/>
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Free Shipping On All Items Exclusively For You!"
+                            android:text="@string/free_shipping_on_all_items_exclusively_for_you"
                             android:textColor="#000"
-                            android:textSize="8dp"
+                            android:textSize="8sp"
                             android:layout_marginTop="2dp"/>
                     </LinearLayout>
                 </LinearLayout>
@@ -82,10 +82,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="You will be save Rs.1230.0 in total"
+                android:text="@string/you_will_be_save_rs_1230_0_in_total"
                 android:textColor="#3B8B3F"
-                android:textSize="12dp"
-                android:layout_marginLeft="20dp"
+                android:textSize="12sp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="5dp"/>
             <LinearLayout
                 android:layout_width="match_parent"

@@ -147,12 +147,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                     FirebaseFirestore.getInstance().collection("whishlist").document(Constaints.current_user)
                             .collection("my_cart").document(p_id).delete();
                     Toast.makeText(ctx,"Data delete", Toast.LENGTH_SHORT).show();
-                    SharedPrefManager.getInstance(ctx).deleteItems();
-                    MyCartFragment myCartFragment = new MyCartFragment();
-                    fragmentTransaction =fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.frame, myCartFragment);
-//                fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
+//                    SharedPrefManager.getInstance(ctx).deleteItems();
+//                    MyCartFragment myCartFragment = new MyCartFragment();
+//                    fragmentTransaction =fragmentManager.beginTransaction();
+//                    fragmentTransaction.replace(R.id.frame, myCartFragment);
+////                fragmentTransaction.addToBackStack(null);
+//                    fragmentTransaction.commit();
                     myCartModelList.remove(position);
                     getCartData();
                     notifyDataSetChanged();

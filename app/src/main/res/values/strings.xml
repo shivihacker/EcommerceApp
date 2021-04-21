@@ -16,4 +16,7 @@
     <string name="close">Close</string>
     <string name="open_navigation_drawer">Open navigation drawer</string>
     <string name="close_navigation_drawer">Close navigation drawer</string>
+    <string name="get_free_delivery_on_all_products">GET FREE DELIVERY ON ALL PRODUCTS!</string>
+    <string name="free_shipping_on_all_items_exclusively_for_you">Free Shipping On All Items Exclusively For You!</string>
+    <string name="you_will_be_save_rs_1230_0_in_total">You will be save Rs.1230.0 in total</string>
 </resources>

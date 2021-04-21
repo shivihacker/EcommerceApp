@@ -180,16 +180,20 @@
             android:layout_marginHorizontal="10dp"
             android:orientation="horizontal">
             <ImageView
+                android:id="@+id/dot"
                 android:layout_width="5dp"
                 android:layout_height="5dp"
+                android:visibility="gone"
                 android:background="@drawable/green_dot"
                 android:layout_gravity="center"
                 android:layout_marginRight="5dp"
                 android:backgroundTint="@color/black"/>
             <TextView
+                android:id="@+id/cash_on_delivery_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Cash On Delivery: Rs.35,040.0"
+                android:visibility="gone"
+                android:text="Cash On Delivery"
                 android:textSize="15sp"
                 android:textColor="@color/black" />
         </LinearLayout>

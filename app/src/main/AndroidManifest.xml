@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.ecommerce">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -13,8 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activities.CategoryItemListActivity"></activity>
-        <activity android:name=".dashboard.Dashboard" />
+        <activity android:name=".Activities.GooglePayMethod"/>
+        <activity android:name=".Activities.Address" />
+        <activity android:name=".Activities.CategoryItemListActivity" />
         <activity android:name=".Activities.DeliveryActivity" />
         <activity android:name=".Activities.OrderDetailsActivity" />
         <activity android:name=".Activities.CategoryActivity" />

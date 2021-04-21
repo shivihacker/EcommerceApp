@@ -10,8 +10,6 @@ import android.widget.TextView;
 
 import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.ecommerce.Adapter.MyCounter;
 import com.example.ecommerce.Model.MyCartModel;
 import com.example.ecommerce.R;
 import com.google.firebase.firestore.FirebaseFirestore;

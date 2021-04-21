@@ -6,22 +6,34 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.ecommerce.R;
 
 public class OrderDetailsActivity extends AppCompatActivity {
+    TextView txtCashOnDelivery;
+    ImageView dot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_details);
+        txtCashOnDelivery=findViewById(R.id.cash_on_delivery_text);
+        dot=findViewById(R.id.dot);
 
-        Toolbar toolbar=(Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar=findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle("Order Details");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        ///////////////total amount ka text h/////////////////////
+        dot.setVisibility(View.VISIBLE);
+        txtCashOnDelivery.setVisibility(View.VISIBLE);
+        ///////////////total amount ka text h/////////////////////
+
     }
 
     @Override
