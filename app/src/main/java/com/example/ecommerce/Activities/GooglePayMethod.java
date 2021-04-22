@@ -15,9 +15,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.ecommerce.Helper.Constaints;
+import com.example.ecommerce.Helper.SharedPrefManager;
 import com.example.ecommerce.R;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GooglePayMethod extends AppCompatActivity {
 
@@ -25,17 +32,38 @@ public class GooglePayMethod extends AppCompatActivity {
     Button send;
     String TAG ="main";
     final int UPI_PAYMENT = 0;
+    String uname,value;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google_pay_method);
+        FirebaseFirestore.getInstance().collection("users").document(Constaints.current_user).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (!documentSnapshot.exists()) {
+                            Log.d("Not Exist", "List is empty");
+                            return;
+                        } else {
+                            try {
+                                 uname = documentSnapshot.get("user_name").toString();
+                            } catch (Exception e) {
+                                Toast.makeText(getApplicationContext(), "Gender field none", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
+        SharedPrefManager sharedPrefManager = new SharedPrefManager(getApplicationContext());
+        value = sharedPrefManager.getTotalAmount();
 
         send = (Button) findViewById(R.id.send);
         amount = (EditText)findViewById(R.id.amount_et);
         note = (EditText)findViewById(R.id.note);
         name = (EditText) findViewById(R.id.name);
         upivirtualid =(EditText) findViewById(R.id.upi_id);
+        amount.setText(value);
+        name.setText(uname);
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +84,6 @@ public class GooglePayMethod extends AppCompatActivity {
 
                     payUsingUpi(name.getText().toString(), upivirtualid.getText().toString(),
                             note.getText().toString(), amount.getText().toString());
-
                 }
             }
         });
@@ -75,21 +102,16 @@ public class GooglePayMethod extends AppCompatActivity {
                 .appendQueryParameter("cu", "INR")
                 //.appendQueryParameter("refUrl", "blueapp")
                 .build();
-
-
         Intent upiPayIntent = new Intent(Intent.ACTION_VIEW);
         upiPayIntent.setData(uri);
-
         // will always show a dialog to user to choose an app
         Intent chooser = Intent.createChooser(upiPayIntent, "Pay with");
-
         // check if intent resolves
         if(null != chooser.resolveActivity(getPackageManager())) {
             startActivityForResult(chooser, UPI_PAYMENT);
         } else {
             Toast.makeText(GooglePayMethod.this,"No UPI app found, please install one to continue",Toast.LENGTH_SHORT).show();
         }
-
     }
 
     @Override
@@ -151,10 +173,26 @@ public class GooglePayMethod extends AppCompatActivity {
                     paymentCancel = "Payment cancelled by user.";
                 }
             }
-
             if (status.equals("success")) {
                 //Code to handle successful transaction here.
                 Toast.makeText(GooglePayMethod.this, "Transaction successful.", Toast.LENGTH_SHORT).show();
+
+                //////////firebase//////////////////
+                HashMap<String, String> productData = new HashMap();
+                productData.put("user_id",Constaints.current_user );
+                productData.put("order_id",FirebaseFirestore.getInstance().collection("whislist")
+                        .document(Constaints.current_user).collection("payment_details").getId());
+                productData.put("user_name",uname);
+                productData.put("approval_ref_no",approvalRefNo);
+                productData.put("status",status);
+                productData.put("amount",value);
+                DocumentReference _reference = FirebaseFirestore.getInstance().collection("whislist")
+                        .document(Constaints.current_user).collection("payment_details").document();
+                _reference.set(productData).isSuccessful();
+                ///////////////////////////////////////////////////////
+                Log.d("orderId",FirebaseFirestore.getInstance().collection("whislist")
+                        .document(Constaints.current_user).collection("payment_details").getId());
+
                 Log.e("UPI", "payment successfull: "+approvalRefNo);
             }
             else if("Payment cancelled by user.".equals(paymentCancel)) {

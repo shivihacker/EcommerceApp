@@ -46,6 +46,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.content.ContentValues.TAG;
+
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     private List<MyCartModel> myCartModelList;
@@ -55,11 +57,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     private FragmentTransaction fragmentTransaction;
     String p_id;
     int counter = 0;
-
     List<String> cartitemlist;
-    int quantity;
-
-
+    private int quantity;
     private int count;
     private double cuttedPrice;
     String totalSum;
@@ -69,10 +68,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         firebaseFirestore=FirebaseFirestore.getInstance();
         this.myCartModelList = myCartModelList;
         cartitemlist = new ArrayList<String>();
-
         this.ctx = ctx;
     }
 
+    public CartAdapter(Context ctx) {
+        this.ctx = ctx;
+    }
 
     @NonNull
     @Override
@@ -111,6 +112,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 Toast.makeText(ctx, "Item Added", Toast.LENGTH_SHORT).show();
                 String c = String.valueOf(count);
                 updatedata(myCartModel.getC_id(),c);
+                updateAllDataTotalAmount();
               //  holder.mycart_number_quantity.setText("" + count);
             }
 
@@ -136,6 +138,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 Toast.makeText(ctx, "Item Deleted", Toast.LENGTH_SHORT).show();
                 String c = String.valueOf(count);
                 updatedata(myCartModel.getC_id(),c);
+                updateAllDataTotalAmount();
               //  holder.mycart_number_quantity.setText(String.valueOf(count));
             }
         });
@@ -146,7 +149,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
                     FirebaseFirestore.getInstance().collection("whishlist").document(Constaints.current_user)
                             .collection("my_cart").document(p_id).delete();
-                    Toast.makeText(ctx,"Data delete", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ctx,"Data deleted", Toast.LENGTH_SHORT).show();
 //                    SharedPrefManager.getInstance(ctx).deleteItems();
 //                    MyCartFragment myCartFragment = new MyCartFragment();
 //                    fragmentTransaction =fragmentManager.beginTransaction();
@@ -155,6 +158,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 //                    fragmentTransaction.commit();
                     myCartModelList.remove(position);
                     getCartData();
+                    updateAllDataTotalAmount();
                     notifyDataSetChanged();
 
 //                    deleteWhishlist(myCartModel.getC_id());
@@ -165,6 +169,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             }
         });
     }
+
     @Override
     public int getItemCount() {
         return myCartModelList.size();
@@ -242,6 +247,27 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                     }
                 });
     }
+    public void updateAllDataTotalAmount()
+    {
+        firebaseFirestore.collection("whishlist")
+                .document(Constaints.current_user).collection("my_cart")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("mydata", document.getId() + " => " + document.getData());
+
+                                document.getReference().update("total_amount", totalSum);
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
     private void deleteWhishlist(String id) {
         Log.d("Del", "ingreso a deleteAccount");
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -252,80 +278,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
                     Toast.makeText(ctx, "Delete Successfull Items", Toast.LENGTH_SHORT).show();
 
-//                firebaseFirestore.collection("wishlist").document(currentUser.getUid()).collection("my_cart").document(id).delete().
-//                addOnSuccessListener(new OnSuccessListener<Void>() {
-//                    @Override
-//                    public void onSuccess(Void aVoid) {
-//                    Toast.makeText(ctx, "Delete Successfull Items", Toast.LENGTH_SHORT).show();
-//
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                Toast.makeText(ctx, "not delete Items", Toast.LENGTH_SHORT).show();
-//
-//
-//            }
-//        });
-
-//        currentUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-//            @Override
-//            public void onComplete(@NonNull Task<Void> task) {
-//                if (task.isSuccessful()) {
-//                    Log.d("Delete", "OK! Works fine!");
-//                    DocumentReference _ref = FirebaseFirestore.getInstance().collection("whishlist").document(currentUser.getUid());
-//                    _ref.delete().isSuccessful();
-//                    SharedPrefManager sharedPrefManager = new SharedPrefManager(ctx);
-//                    sharedPrefManager.deleteItems();
-//                    Toast.makeText(ctx, "Delete Successfull Items", Toast.LENGTH_SHORT).show();
-//
-//                }
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                Log.e("Del", "Failed to Delete Item", e);
-//            }
-//        });
     }
-//    public void DeleteCart(){
-//        FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
-//        final FirebaseUser currentUser=firebaseAuth.getCurrentUser();
-//        firebaseFirestore.collection("whishlist").document(Constaints.current_user).collection("my_cart").get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        double sum =0.0;
-//                        if (task.isSuccessful()) {
-//                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
-//
-//                                String cutted_price=documentSnapshot.get("cutted_price").toString();
-//                                String totalSum=documentSnapshot.get("total_amount").toString();
-//                                String c=documentSnapshot.get("free_coupons").toString();
-//                                String coupon_applied=documentSnapshot.get("coupons_applied").toString();
-//                                String count=documentSnapshot.get("p_count").toString();
-//
-//                                double cutPrice=Double.parseDouble(cutted_price);
-//                                double totalAmount=Double.parseDouble(totalSum);
-//                                long coupons=Long.parseLong(c);
-//                                int couponApplied=Integer.parseInt(coupon_applied);
-//                                int counter=Integer.parseInt(count);
-//                                ModelProducts modelProducts = new ModelProducts(documentSnapshot.getString("product_id"),
-//                                        counter,
-//                                        documentSnapshot.getString("product_title"),
-//                                        documentSnapshot.getString("product_price"),
-//                                        documentSnapshot.getString("product_image"),
-//                                        cutPrice,
-//                                        couponApplied,
-//                                        coupons,
-//                                        totalAmount);
-//                            }
-//                        }
-//                    }
-//                });
-//    }
-
-
 }
 
 

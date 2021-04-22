@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import com.example.ecommerce.Activities.LoginPage;
 import com.example.ecommerce.Model.UserDetails;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -106,15 +107,15 @@ public void logout() {
    public void deleteItems() {
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.clear();
+        editor.remove("product_id");
 //        editor.apply();
         editor.commit();
    }
 
-   public void wishListItem(List<String> wishlist){
+   public void wishListItem(String product_id){
        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
        SharedPreferences.Editor editor = sharedPreferences.edit();
-       editor.putStringSet("key_wishlist_item", (Set<String>) wishlist);
+       editor.putStringSet("key_wishlist_item", Collections.singleton(product_id));
        editor.apply();
    }
 

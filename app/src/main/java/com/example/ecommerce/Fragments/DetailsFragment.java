@@ -22,6 +22,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.ecommerce.Activities.DeliveryActivity;
+import com.example.ecommerce.Adapter.CartAdapter;
 import com.example.ecommerce.Adapter.ItemShowViewPageAdap;
 import com.example.ecommerce.Adapter.MyWishlistAdapter;
 import com.example.ecommerce.Helper.Constaints;
@@ -233,6 +234,8 @@ public class DetailsFragment extends Fragment {
                         addToWishlist.setImageTintList(ColorStateList.valueOf(Color.RED));
                         getProduct_AddToWishlist();
                         wishlist.add(Constaints.product_id);
+                        Log.d("wishlistId",wishlist.get(0));
+                        //Log.d("wishlistId",wishlist.get(1));
                         Toast.makeText(getContext(), "Added to wishlist Successfully", Toast.LENGTH_SHORT).show();
 
 //                        Map<String, Object> addProduct = new HashMap<>();
@@ -370,11 +373,15 @@ public class DetailsFragment extends Fragment {
 
                             Log.d("list Images Of:", list.toString());
                             documentSnapshot.getString("p_brand");
-                            if (wishlist.contains(Constaints.product_id)){
-                                ALREADY_ADDED_TO_WISHLIST=true;
-                                addToWishlist.setImageTintList(ColorStateList.valueOf(Color.RED));
-                            }else {
-                                ALREADY_ADDED_TO_WISHLIST=false;
+                            for (int i=0;i<wishlist.size();i++){
+                                if (wishlist.get(i)==Constaints.product_id){
+                                    SharedPrefManager.getInstance(getActivity()).wishListItem(Constaints.product_id);
+                                    ALREADY_ADDED_TO_WISHLIST=true;
+                                    addToWishlist.setImageTintList(ColorStateList.valueOf(Color.RED));
+                                }else {
+                                    ALREADY_ADDED_TO_WISHLIST=false;
+                                    addToWishlist.setImageTintList(ColorStateList.valueOf(Color.parseColor("#9e9e9e")));
+                                }
                             }
                         }else {
                             String error=task.getException().getMessage();
@@ -424,11 +431,15 @@ public class DetailsFragment extends Fragment {
 
                             Log.d("list Images Of:", list.toString());
                             documentSnapshot.getString("p_brand");
-                            if (wishlist.contains(Constaints.product_id)){
-                                ALREADY_ADDED_TO_WISHLIST=true;
-                                addToWishlist.setImageTintList(ColorStateList.valueOf(Color.RED));
-                            }else {
-                                ALREADY_ADDED_TO_WISHLIST=false;
+                            for (int i=0;i<wishlist.size();i++){
+                                if (wishlist.get(i)==Constaints.product_id){
+                                    SharedPrefManager.getInstance(getActivity()).wishListItem(Constaints.product_id);
+                                    ALREADY_ADDED_TO_WISHLIST=true;
+                                    addToWishlist.setImageTintList(ColorStateList.valueOf(Color.RED));
+                                }else {
+                                    ALREADY_ADDED_TO_WISHLIST=false;
+                                    addToWishlist.setImageTintList(ColorStateList.valueOf(Color.parseColor("#9e9e9e")));
+                                }
                             }
                         }else {
                             String error=task.getException().getMessage();
@@ -477,12 +488,15 @@ public class DetailsFragment extends Fragment {
 
                             Log.d("list Images Of:", list.toString());
                             documentSnapshot.getString("p_brand");
-                            if (wishlist.contains(Constaints.product_id)){
-                                SharedPrefManager.getInstance(getActivity()).wishListItem(wishlist);
-                                ALREADY_ADDED_TO_WISHLIST=true;
-                                addToWishlist.setImageTintList(ColorStateList.valueOf(Color.RED));
-                            }else {
-                                ALREADY_ADDED_TO_WISHLIST=false;
+                            for (int i=0;i<wishlist.size();i++){
+                                if (wishlist.get(i)==Constaints.product_id){
+                                    SharedPrefManager.getInstance(getActivity()).wishListItem(Constaints.product_id);
+                                    ALREADY_ADDED_TO_WISHLIST=true;
+                                    addToWishlist.setImageTintList(ColorStateList.valueOf(Color.RED));
+                                }else {
+                                    ALREADY_ADDED_TO_WISHLIST=false;
+                                    addToWishlist.setImageTintList(ColorStateList.valueOf(Color.parseColor("#9e9e9e")));
+                                }
                             }
                         }else {
                             String error=task.getException().getMessage();
