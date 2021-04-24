@@ -72,6 +72,7 @@ public class DetailsFragment extends Fragment {
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private int counter=0;
+    int colourGrey,colourRed;
     public DetailsFragment() {
 
     }
@@ -101,6 +102,14 @@ public class DetailsFragment extends Fragment {
         product_name = view.findViewById(R.id.p_name);
         rating = view.findViewById(R.id.rating);
         review = view.findViewById(R.id.review);
+
+        //////////////////Colour/////////////////////
+        colourGrey=Color.parseColor("#9e9e9e");
+        colourRed=Color.RED;
+        Constaints.greyColor=colourGrey;
+        Constaints.redColor=colourRed;
+        //////////////////Colour/////////////////////
+
         /////////////////viewpager////////////////////
         sliderModelList=new ArrayList<SliderModel>();
         //list=new ArrayList<>();
@@ -228,10 +237,10 @@ public class DetailsFragment extends Fragment {
                 }else {
                     if (ALREADY_ADDED_TO_WISHLIST) {
                         ALREADY_ADDED_TO_WISHLIST = false;
-                        addToWishlist.setImageTintList(ColorStateList.valueOf(Color.parseColor("#9e9e9e")));
+                        addToWishlist.setImageTintList(ColorStateList.valueOf(Constaints.greyColor));
                     } else {
                         ALREADY_ADDED_TO_WISHLIST=true;
-                        addToWishlist.setImageTintList(ColorStateList.valueOf(Color.RED));
+                        addToWishlist.setImageTintList(ColorStateList.valueOf(Constaints.redColor));
                         getProduct_AddToWishlist();
                         wishlist.add(Constaints.product_id);
                         Log.d("wishlistId",wishlist.get(0));
@@ -310,30 +319,6 @@ public class DetailsFragment extends Fragment {
 
         return view;
     }
-//    ///////////////viewpage function//////////////
-//    public void sliderBanner(){
-//        firebaseFirestore.collection("Banner").document("banner_slider").get()
-//                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            DocumentSnapshot documentSnapshot = task.getResult();
-//                            ArrayList<SliderModel> sliderModels = (ArrayList<SliderModel>) documentSnapshot.get("my_img");
-//                            // sliderModelList.add(new SliderModel((String) documentSnapshot.get("b_image")));
-//                            for (int i = 0; i<sliderModels.size();i++)
-//                            {
-//                                sliderModelList.add(sliderModels.get(i));
-//                            }
-//                            Log.d("banner images", sliderModelList.toString());
-//                            sliderHomeAdapter.notifyDataSetChanged();
-//                        } else {
-//                            String error = task.getException().getMessage();
-//                            Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                });
-//    }
-//    ///////////////viewpage function//////////////
     /////////////////////homeFragment Data////////////////
     public void filterProductData(String p_doc, String p_collection,String id) {
         firebaseFirestore.collection("CATEGORIES").document(p_doc).collection(p_collection).document(id).get()
@@ -377,10 +362,10 @@ public class DetailsFragment extends Fragment {
                                 if (wishlist.get(i)==Constaints.product_id){
                                     SharedPrefManager.getInstance(getActivity()).wishListItem(Constaints.product_id);
                                     ALREADY_ADDED_TO_WISHLIST=true;
-                                    addToWishlist.setImageTintList(ColorStateList.valueOf(Color.RED));
+                                    addToWishlist.setImageTintList(ColorStateList.valueOf(Constaints.redColor));
                                 }else {
                                     ALREADY_ADDED_TO_WISHLIST=false;
-                                    addToWishlist.setImageTintList(ColorStateList.valueOf(Color.parseColor("#9e9e9e")));
+                                    addToWishlist.setImageTintList(ColorStateList.valueOf(Constaints.greyColor));
                                 }
                             }
                         }else {
@@ -435,10 +420,10 @@ public class DetailsFragment extends Fragment {
                                 if (wishlist.get(i)==Constaints.product_id){
                                     SharedPrefManager.getInstance(getActivity()).wishListItem(Constaints.product_id);
                                     ALREADY_ADDED_TO_WISHLIST=true;
-                                    addToWishlist.setImageTintList(ColorStateList.valueOf(Color.RED));
+                                    addToWishlist.setImageTintList(ColorStateList.valueOf(Constaints.redColor));
                                 }else {
                                     ALREADY_ADDED_TO_WISHLIST=false;
-                                    addToWishlist.setImageTintList(ColorStateList.valueOf(Color.parseColor("#9e9e9e")));
+                                    addToWishlist.setImageTintList(ColorStateList.valueOf(Constaints.greyColor));
                                 }
                             }
                         }else {
@@ -492,10 +477,10 @@ public class DetailsFragment extends Fragment {
                                 if (wishlist.get(i)==Constaints.product_id){
                                     SharedPrefManager.getInstance(getActivity()).wishListItem(Constaints.product_id);
                                     ALREADY_ADDED_TO_WISHLIST=true;
-                                    addToWishlist.setImageTintList(ColorStateList.valueOf(Color.RED));
+                                    addToWishlist.setImageTintList(ColorStateList.valueOf(Constaints.redColor));
                                 }else {
                                     ALREADY_ADDED_TO_WISHLIST=false;
-                                    addToWishlist.setImageTintList(ColorStateList.valueOf(Color.parseColor("#9e9e9e")));
+                                    addToWishlist.setImageTintList(ColorStateList.valueOf(Constaints.greyColor));
                                 }
                             }
                         }else {

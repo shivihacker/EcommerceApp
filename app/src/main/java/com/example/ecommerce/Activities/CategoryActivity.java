@@ -91,8 +91,8 @@ public class CategoryActivity extends AppCompatActivity {
 
     }
     public void getCategory(String category_doc,String product_collec){
-        firebaseFirestore.collection("CATEGORIES").document(category_doc).collection(product_collec).orderBy("index").get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        firebaseFirestore.collection("CATEGORIES").document(category_doc).collection(product_collec)
+                .orderBy("index").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()){

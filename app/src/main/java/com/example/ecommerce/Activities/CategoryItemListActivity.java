@@ -39,8 +39,6 @@ public class CategoryItemListActivity extends AppCompatActivity {
     private CircleIndicator circleIndicator;
     private RecyclerView categoryRecycler;
     private ArrayList<ModelProducts> modelProductsList;
-    CategoryAdapter categoryAdapter;
-    private List<CategoryModel> categoryModelsList;
     ArrayList<SliderModel> sliderModelList;
     SliderHomeAdapter sliderHomeAdapter;
     ProductAdapter productAdapter;

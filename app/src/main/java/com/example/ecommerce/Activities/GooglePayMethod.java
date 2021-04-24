@@ -64,6 +64,7 @@ public class GooglePayMethod extends AppCompatActivity {
         upivirtualid =(EditText) findViewById(R.id.upi_id);
         amount.setText(value);
         name.setText(uname);
+        upivirtualid.setText("8083153751@paytm");
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override

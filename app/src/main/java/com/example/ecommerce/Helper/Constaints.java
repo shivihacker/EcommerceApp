@@ -7,5 +7,7 @@ public class Constaints {
     public static int recycler_position ;
    public static int category_position ;                            ////////////phle category ka position h homapage ka
     public static int mobile_category_position ;
-    public static int category_product_position ;                    //////////second category ka h particular product category categoryItem ka
+    public static int category_product_position ;                //////////second category ka h particular product category categoryItem ka
+    public static int redColor;
+    public static int greyColor;
 }
