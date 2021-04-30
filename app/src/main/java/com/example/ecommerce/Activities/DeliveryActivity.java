@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.ecommerce.Adapter.CartAdapter;
 import com.example.ecommerce.Adapter.MyWishlistAdapter;
+import com.example.ecommerce.Fragments.MyCartFragment;
 import com.example.ecommerce.Helper.Constaints;
 import com.example.ecommerce.Helper.SharedPrefManager;
 import com.example.ecommerce.Model.MyCartModel;
@@ -47,8 +48,9 @@ public class DeliveryActivity extends AppCompatActivity {
     private long coupons;
     FirebaseFirestore firebaseFirestore;
     private CartAdapter cartAdapter;
+    String totalamount;
     private List<MyCartModel> myCartModelList;
-    public static boolean ARROW_BUTTON_DOWNWARD=false;
+    public static final int SELECT_ADDRESS=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,19 +72,19 @@ public class DeliveryActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle("Delivery");
 
-//        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getApplicationContext());
-//        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getApplicationContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         firebaseFirestore= FirebaseFirestore.getInstance();
-//        myCartModelList = new ArrayList<>();
-//        RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(getApplicationContext());
-//        deliveryRecyclerview.setLayoutManager(layoutManager);
-//        deliveryRecyclerview.setHasFixedSize(true);
-//        getCartData();
-//
-//        cartAdapter=new CartAdapter(myCartModelList,getApplicationContext());
-//        deliveryRecyclerview.setAdapter(cartAdapter);
-//        SharedPrefManager sharedPrefManager = new SharedPrefManager(getApplicationContext());
-//        String value = sharedPrefManager.getTotalAmount();
+        myCartModelList = new ArrayList<>();
+        RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(getApplicationContext());
+        deliveryRecyclerview.setLayoutManager(layoutManager);
+        deliveryRecyclerview.setHasFixedSize(true);
+        getCartDataa();
+
+        cartAdapter=new CartAdapter(myCartModelList,getApplicationContext(),totalAmount,1);
+        deliveryRecyclerview.setAdapter(cartAdapter);
+        SharedPrefManager sharedPrefManager = new SharedPrefManager(getApplicationContext());
+        String value = sharedPrefManager.getTotalAmount();
 //        Log.d("total amount",value);
 ////        totalAmount.setText(value);
 
@@ -90,24 +92,12 @@ public class DeliveryActivity extends AppCompatActivity {
         changeOrAddNewAddressBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent=new Intent(getApplicationContext(),MyAddressAct.class);
+                intent.putExtra("MODE",SELECT_ADDRESS);
+                startActivity(intent);
             }
         });
 
-        upi_option.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (ARROW_BUTTON_DOWNWARD){
-                    ARROW_BUTTON_DOWNWARD=false;
-                    upi_selection_arrow.setRotation(-90);
-                    linear_vpa_enter.setVisibility(View.VISIBLE);
-                }else {
-                    ARROW_BUTTON_DOWNWARD=true;
-                    upi_selection_arrow.setRotation(90);
-                    linear_vpa_enter.setVisibility(View.GONE);
-                }
-            }
-        });
 
         paymentOptionBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,40 +114,15 @@ public class DeliveryActivity extends AppCompatActivity {
         });
     }
 
-    public void getCartData() {
+    public void getCartDataa() {
         firebaseFirestore.collection("whishlist").document(Constaints.current_user).collection("my_cart").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        double sum =0.0;
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                                try{
-                                    String s = documentSnapshot.getString("product_price");
-                                    double pr = Double.parseDouble(s);
-                                    String c = documentSnapshot.getString("p_count");
-                                    String coupan=documentSnapshot.getString("free_coupons");
-                                    String cutPrice=documentSnapshot.getString("cutted_price");
-                                    cuttedPrice=Double.parseDouble(cutPrice);
-                                    count = Integer.parseInt(c);
-                                    coupons=Long.parseLong(coupan);
-                                    if(count >0) {
-                                        sum+= pr*count;
-                                    }
-                                    else{
-                                        sum += pr;
-                                    }
-                                }
-                                catch (NumberFormatException e)
-                                {
-                                    e.printStackTrace();
-                                }
-                                String totalSum=String.valueOf(sum);
-                                DocumentReference _reference = firebaseFirestore.collection("whishlist")
-                                        .document(Constaints.current_user).collection("my_cart").document(Constaints.product_id);
-                                Map<String,Object> edited=new HashMap<>();
-                                edited.put("total_amount",totalSum);
-                                _reference.update(edited).isSuccessful();
+                                 totalamount=documentSnapshot.get("total_amount").toString();
+                                double sum=Double.parseDouble(totalamount);
 
                                 myCartModelList.add(new MyCartModel(
                                         documentSnapshot.get("product_id").toString(),
@@ -171,11 +136,10 @@ public class DeliveryActivity extends AppCompatActivity {
                                         count));
 
                                 // totalAmount.setText((int) sum);
-
-                                totalAmount.setText(totalSum);
+                              //  totalAmount.setText(totalamount);
                             }
-
                             cartAdapter.notifyDataSetChanged();
+
                         }else {
                             String error=task.getException().getMessage();
                             Toast.makeText(getApplicationContext(),error, Toast.LENGTH_SHORT).show();

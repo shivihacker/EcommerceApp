@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/default_color"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activities.MyAddressAct">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+    </com.google.android.material.appbar.AppBarLayout>
+    <LinearLayout
+        android:id="@+id/add_new_address_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:elevation="5dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Add a new address"
+            android:textSize="16sp"
+            android:textColor="@color/colorPrimary"
+            android:padding="16dp"
+            android:drawableStart="@drawable/plus"
+            android:drawableTint="@color/colorPrimary"
+            android:paddingBottom="8dp"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/address_2_saved"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="2 address saved"
+        android:textColor="@color/black"
+        android:layout_marginVertical="10dp"
+        android:layout_marginHorizontal="15dp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/default_color"
+        android:id="@+id/recycler_no_of_address"
+        android:layout_margin="10dp" />
+
+    <Button
+        android:id="@+id/deliver_here"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Deliver here"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white"
+        android:layout_margin="15dp"/>
+</LinearLayout>

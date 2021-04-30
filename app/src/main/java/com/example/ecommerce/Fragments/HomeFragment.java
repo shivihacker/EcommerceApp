@@ -70,7 +70,7 @@ public class HomeFragment extends Fragment {
         vertical=view.findViewById(R.id.vertical);
         horizontal=view.findViewById(R.id.horizontal);
         categoryRecyclerview=view.findViewById(R.id.category_recyclerview);
-     
+
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         categoryRecyclerview.setLayoutManager(linearLayoutManager);

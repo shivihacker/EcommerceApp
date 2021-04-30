@@ -53,22 +53,23 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     private List<MyCartModel> myCartModelList;
     Context ctx;
     FirebaseFirestore firebaseFirestore;
-    private FragmentManager fragmentManager;
-    private FragmentTransaction fragmentTransaction;
     String p_id;
-    int counter = 0;
     List<String> cartitemlist;
     private int quantity;
     private int count;
     private double cuttedPrice;
     String totalSum;
+    TextView totalAmount;
     private long coupons;
+    int i;
 
-    public CartAdapter(List<MyCartModel> myCartModelList, Context ctx) {
+    public CartAdapter(List<MyCartModel> myCartModelList, Context ctx,TextView totalAmount,int i) {
         firebaseFirestore=FirebaseFirestore.getInstance();
         this.myCartModelList = myCartModelList;
         cartitemlist = new ArrayList<String>();
         this.ctx = ctx;
+        this.totalAmount=totalAmount;
+        this.i=i;
     }
 
     public CartAdapter(Context ctx) {
@@ -78,96 +79,163 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     @NonNull
     @Override
     public CartAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_cart_item_layout, parent, false);
+        View view=null;
+        if (i==0){
+            view= LayoutInflater.from(parent.getContext()).inflate(R.layout.my_cart_item_layout, parent, false);
+        }else if (i==1){
+            view= LayoutInflater.from(parent.getContext()).inflate(R.layout.my_cart_item_layout, parent, false);
+        }
         return new ViewHolder(view);
     }
 
 
     @Override
     public void onBindViewHolder(@NonNull final CartAdapter.ViewHolder holder, final int position) {
+        if (i==0){
+            p_id = myCartModelList.get(position).getC_id();
+            cartitemlist.add(p_id);
+            final MyCartModel myCartModel = myCartModelList.get(position);
+            holder.mycart_productName.setText(myCartModelList.get(position).getC_name());
+            holder.mycart_productPrice.setText(myCartModelList.get(position).getC_price());
 
-        p_id = myCartModelList.get(position).getC_id();
-        cartitemlist.add(p_id);
-        final MyCartModel myCartModel = myCartModelList.get(position);
-        holder.mycart_productName.setText(myCartModelList.get(position).getC_name());
-        holder.mycart_productPrice.setText(myCartModelList.get(position).getC_price());
+            Picasso.get().load(myCartModelList.get(position).getC_img()).into(holder.mycart_productImage);
 
-        Picasso.get().load(myCartModelList.get(position).getC_img()).into(holder.mycart_productImage);
-
-        if(quantity == 1)
-        {
-            holder.mycart_number_quantity.setText(String.valueOf(quantity));
-        }
-
-        holder.itemView.findViewById(R.id.mycart_increase_sign).setOnClickListener(new View.OnClickListener() {
-
-
-            @Override
-            public void onClick(View v) {
-//                SharedPrefManager.getInstance(ctx).getCartValue(0);
-                int count= Integer.parseInt(String.valueOf(holder.mycart_number_quantity.getText()));
-                count++;
-                holder.mycart_number_quantity.setText("" + count);
-//                counter++;
-                Toast.makeText(ctx, "Item Added", Toast.LENGTH_SHORT).show();
-                String c = String.valueOf(count);
-                updatedata(myCartModel.getC_id(),c);
-                updateAllDataTotalAmount();
-              //  holder.mycart_number_quantity.setText("" + count);
+            if(quantity == 1)
+            {
+                holder.mycart_number_quantity.setText(String.valueOf(quantity));
             }
 
-        });
-        holder.itemView.findViewById(R.id.mycart_decrease_sign).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-              //  String quantity = holder.mycart_number_quantity.getText().toString();
+            holder.itemView.findViewById(R.id.mycart_increase_sign).setOnClickListener(new View.OnClickListener() {
+
+
+                @Override
+                public void onClick(View v) {
+//                SharedPrefManager.getInstance(ctx).getCartValue(0);
+                    int count= Integer.parseInt(String.valueOf(holder.mycart_number_quantity.getText()));
+                    count++;
+                    holder.mycart_number_quantity.setText("" + count);
+//                counter++;
+                    Toast.makeText(ctx, "Item Added", Toast.LENGTH_SHORT).show();
+                    String c = String.valueOf(count);
+                    updatedata(myCartModel.getC_id(),c);
+                    updateAllDataTotalAmount();
+                    //  holder.mycart_number_quantity.setText("" + count);
+                }
+
+            });
+            holder.itemView.findViewById(R.id.mycart_decrease_sign).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //  String quantity = holder.mycart_number_quantity.getText().toString();
 //                if (counter == 0) {
 //                    counter = 0;
 //                }
 //                else{
 //                    counter--;
 //                }
-                int count= Integer.parseInt(String.valueOf(holder.mycart_number_quantity.getText()));
-                if (count == 1) {
-                    holder.mycart_number_quantity.setText("1");
-                } else {
-                    count -= 1;
-                    holder.mycart_number_quantity.setText("" + count);
-                }
+                    int count= Integer.parseInt(String.valueOf(holder.mycart_number_quantity.getText()));
+                    if (count == 1) {
+                        holder.mycart_number_quantity.setText("1");
+                    } else {
+                        count -= 1;
+                        holder.mycart_number_quantity.setText("" + count);
+                    }
 //                holder.mycart_number_quantity.setText(String.valueOf(count));
-                Toast.makeText(ctx, "Item Deleted", Toast.LENGTH_SHORT).show();
-                String c = String.valueOf(count);
-                updatedata(myCartModel.getC_id(),c);
-                updateAllDataTotalAmount();
-              //  holder.mycart_number_quantity.setText(String.valueOf(count));
-            }
-        });
-        holder.mycart_removeItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (cartitemlist!=null){
-
-                    FirebaseFirestore.getInstance().collection("whishlist").document(Constaints.current_user)
-                            .collection("my_cart").document(p_id).delete();
-                    Toast.makeText(ctx,"Data deleted", Toast.LENGTH_SHORT).show();
-//                    SharedPrefManager.getInstance(ctx).deleteItems();
-//                    MyCartFragment myCartFragment = new MyCartFragment();
-//                    fragmentTransaction =fragmentManager.beginTransaction();
-//                    fragmentTransaction.replace(R.id.frame, myCartFragment);
-////                fragmentTransaction.addToBackStack(null);
-//                    fragmentTransaction.commit();
-                    myCartModelList.remove(position);
-                    getCartData();
+                    Toast.makeText(ctx, "Item Deleted", Toast.LENGTH_SHORT).show();
+                    String c = String.valueOf(count);
+                    updatedata(myCartModel.getC_id(),c);
                     updateAllDataTotalAmount();
-                    notifyDataSetChanged();
-
-//                    deleteWhishlist(myCartModel.getC_id());
-//                    Intent intent=new Intent(ctx,MyCartFragment.class);
-//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                    ctx.startActivity(intent);
+                    //  holder.mycart_number_quantity.setText(String.valueOf(count));
                 }
+            });
+            holder.mycart_removeItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (cartitemlist!=null){
+
+                        FirebaseFirestore.getInstance().collection("whishlist").document(Constaints.current_user)
+                                .collection("my_cart").document(p_id).delete();
+                        Toast.makeText(ctx,"Data deleted", Toast.LENGTH_SHORT).show();
+
+                        myCartModelList.remove(position);
+                        getAmountData();
+                        updateAllDataTotalAmount();
+                        notifyDataSetChanged();
+
+                    }
+                }
+            });
+        }else if (i==1){
+            p_id = myCartModelList.get(position).getC_id();
+            cartitemlist.add(p_id);
+            final MyCartModel myCartModel = myCartModelList.get(position);
+            holder.deliveryCart_productName.setText(myCartModelList.get(position).getC_name());
+            holder.deliveryCart_productPrice.setText(myCartModelList.get(position).getC_price());
+            //////////////////////////////////////////
+            holder.deliverCart_number_quantity.setText((CharSequence) holder.mycart_number_quantity);
+
+            Picasso.get().load(myCartModelList.get(position).getC_img()).into(holder.deliveryCart_productImage);
+
+            if(quantity == 1)
+            {
+                holder.mycart_number_quantity.setText(String.valueOf(quantity));
             }
-        });
+
+            holder.itemView.findViewById(R.id.mycart_increase_sign).setOnClickListener(new View.OnClickListener() {
+
+
+                @Override
+                public void onClick(View v) {
+//                SharedPrefManager.getInstance(ctx).getCartValue(0);
+                    int count= Integer.parseInt(String.valueOf(holder.deliverCart_number_quantity.getText()));
+                    count++;
+                    holder.deliverCart_number_quantity.setText("" + count);
+//                counter++;
+                    Toast.makeText(ctx, "Item Added", Toast.LENGTH_SHORT).show();
+                    String c = String.valueOf(count);
+                    updatedata(myCartModel.getC_id(),c);
+                    updateAllDataTotalAmount();
+                    //  holder.mycart_number_quantity.setText("" + count);
+                }
+
+            });
+            holder.itemView.findViewById(R.id.mycart_decrease_sign).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int count= Integer.parseInt(String.valueOf(holder.deliverCart_number_quantity.getText()));
+                    if (count == 1) {
+                        holder.deliverCart_number_quantity.setText("1");
+                    } else {
+                        count -= 1;
+                        holder.deliverCart_number_quantity.setText("" + count);
+                    }
+//                holder.mycart_number_quantity.setText(String.valueOf(count));
+                    Toast.makeText(ctx, "Item Deleted", Toast.LENGTH_SHORT).show();
+                    String c = String.valueOf(count);
+                    updatedata(myCartModel.getC_id(),c);
+                    updateAllDataTotalAmount();
+                    //  holder.mycart_number_quantity.setText(String.valueOf(count));
+                }
+            });
+            holder.deliveryCart_removeItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (cartitemlist!=null){
+
+                        FirebaseFirestore.getInstance().collection("whishlist").document(Constaints.current_user)
+                                .collection("my_cart").document(p_id).delete();
+                        Toast.makeText(ctx,"Data deleted", Toast.LENGTH_SHORT).show();
+
+                        myCartModelList.remove(position);
+                        getAmountData();
+                        updateAllDataTotalAmount();
+                        notifyDataSetChanged();
+
+                    }
+                }
+            });
+        }
+
     }
 
     @Override
@@ -177,19 +245,32 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView mycart_decrease_sign, mycart_number_quantity, mycart_increase_sign;
+        TextView deliveryCart_decrease_sign, deliverCart_number_quantity, deliveryCart_increase_sign;
         TextView mycart_productName, mycart_productPrice;
-        ImageView mycart_productImage;
-        ElasticImageView mycart_removeItem;
+        TextView deliveryCart_productName, deliveryCart_productPrice;
+        ImageView mycart_productImage,deliveryCart_productImage;
+        ElasticImageView mycart_removeItem,deliveryCart_removeItem;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            mycart_decrease_sign = itemView.findViewById(R.id.mycart_decrease_sign);
-            mycart_increase_sign = itemView.findViewById(R.id.mycart_increase_sign);
-            mycart_number_quantity = itemView.findViewById(R.id.mycart_number_quantity);
-            mycart_productImage = itemView.findViewById(R.id.mycart_product_img);
-            mycart_removeItem = itemView.findViewById(R.id.mycart_remove_items);
-            mycart_productName = itemView.findViewById(R.id.mycart_product_name);
-            mycart_productPrice = itemView.findViewById(R.id.mycart_product_price);
+            if (i==0){
+                mycart_decrease_sign = itemView.findViewById(R.id.mycart_decrease_sign);
+                mycart_increase_sign = itemView.findViewById(R.id.mycart_increase_sign);
+                mycart_number_quantity = itemView.findViewById(R.id.mycart_number_quantity);
+                mycart_productImage = itemView.findViewById(R.id.mycart_product_img);
+                mycart_removeItem = itemView.findViewById(R.id.mycart_remove_items);
+                mycart_productName = itemView.findViewById(R.id.mycart_product_name);
+                mycart_productPrice = itemView.findViewById(R.id.mycart_product_price);
+            }
+           else if (i==1){
+                deliveryCart_decrease_sign = itemView.findViewById(R.id.mycart_decrease_sign);
+                deliveryCart_increase_sign = itemView.findViewById(R.id.mycart_increase_sign);
+                deliverCart_number_quantity = itemView.findViewById(R.id.mycart_number_quantity);
+                deliveryCart_productImage = itemView.findViewById(R.id.mycart_product_img);
+                deliveryCart_removeItem = itemView.findViewById(R.id.mycart_remove_items);
+                deliveryCart_productName = itemView.findViewById(R.id.mycart_product_name);
+                deliveryCart_productPrice = itemView.findViewById(R.id.mycart_product_price);
+            }
 
         }
     }
@@ -203,11 +284,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
             _ref.update(edited).isSuccessful();
 
-            getCartData();
+            getAmountData();
     }
 
 
-    public void getCartData() {
+    public void getAmountData() {
         firebaseFirestore.collection("whishlist").document(Constaints.current_user).collection("my_cart").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

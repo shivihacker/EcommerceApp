@@ -17,12 +17,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ecommerce.Activities.AddressForm;
 import com.example.ecommerce.Activities.DeliveryActivity;
 import com.example.ecommerce.Adapter.CartAdapter;
 import com.example.ecommerce.Adapter.MyWishlistAdapter;
 import com.example.ecommerce.Adapter.ProductAdapter;
 import com.example.ecommerce.Helper.Constaints;
 import com.example.ecommerce.Helper.SharedPrefManager;
+import com.example.ecommerce.Model.AddressModal;
 import com.example.ecommerce.Model.ModelProducts;
 import com.example.ecommerce.Model.MyCartModel;
 import com.example.ecommerce.Model.MyNewCartModel;
@@ -54,6 +56,8 @@ public class MyCartFragment extends Fragment {
     List<MyCartModel> myCartModelList;
     CartAdapter cartAdapter;
     FirebaseFirestore firebaseFirestore;
+    List<AddressModal> addressModalList;
+    public static boolean addressSelected =false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -63,19 +67,20 @@ public class MyCartFragment extends Fragment {
         totalAmount=view.findViewById(R.id.total_amount);
         mycartContinueButton=view.findViewById(R.id.mycart_continue_btn);
         firebaseFirestore=FirebaseFirestore.getInstance();
+
         myCartModelList = new ArrayList<>();
         RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(getActivity());
         vertical_cart.setLayoutManager(layoutManager);
         vertical_cart.setHasFixedSize(true);
         getCartData();
 
-        cartAdapter=new CartAdapter(myCartModelList,getActivity());
+        cartAdapter=new CartAdapter(myCartModelList,getActivity(),totalAmount,0);
         vertical_cart.setAdapter(cartAdapter);
         SharedPrefManager sharedPrefManager = new SharedPrefManager(getContext());
         String value = sharedPrefManager.getTotalAmount();
 
         Log.d("total amount",value);
-        totalAmount.setText(value);
+       // totalAmount.setText(value);
 
         //totalAmount.setText(SharedPrefManager.getInstance(getActivity()).getTotalAmount();
 //        getProducts();
@@ -85,8 +90,14 @@ public class MyCartFragment extends Fragment {
         mycartContinueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getActivity(), DeliveryActivity.class);
+                HashMap<String, Object> productData = new HashMap();
+                productData.put("list_size","0");
+                DocumentReference _reference = firebaseFirestore.collection("whishlist").document(Constaints.current_user)
+                        .collection("data").document("My_Address");
+                _reference.set(productData).isSuccessful();
+                Intent intent=new Intent(getActivity(),DeliveryActivity.class);
                 startActivity(intent);
+               // loadAddresses();
             }
         });
 
@@ -104,6 +115,7 @@ public class MyCartFragment extends Fragment {
                                 try{
                                     String s = documentSnapshot.getString("product_price");
                                     double pr = Double.parseDouble(s);
+
                                     String c = documentSnapshot.getString("p_count");
                                     String coupan=documentSnapshot.getString("free_coupons");
                                     String cutPrice=documentSnapshot.getString("cutted_price");
@@ -152,32 +164,35 @@ public class MyCartFragment extends Fragment {
                     }
                 });
     }
-
-//    public void getProducts()
-//    {
-//        firebaseFirestore.collection("whishlist")
-//                .document(Constaints.current_user).collection("my_cart").document(Constaints.product_id).get()
-//                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                        if(task.isSuccessful()) {
-//                            DocumentSnapshot documentSnapshot = task.getResult();
-//
-//                                MyNewCartModel myNewCartModel = new MyNewCartModel(
-//                                        documentSnapshot.getString("product_id"),
-//                                        documentSnapshot.getString("product_name"),
-//                                        documentSnapshot.getString("product_price"),
-//                                        documentSnapshot.getString("product_image")
-//                                );
-//
-//                                myNewCartModelList.add(myNewCartModel);
-////                            productAdapter=new ProductAdapter(modelProductsList,0);
-////                            grid.setAdapter(productAdapter);
-//                            Log.d("MyCart",myNewCartModelList.get(2).getName());
-//
-//                        }
-//                    }
-//                });
-//    }
+    public void loadAddresses(){
+        firebaseFirestore.collection("wishlist").document(Constaints.current_user).collection("data")
+                .document("My_Address").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()){
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    String listSize=documentSnapshot.getString("list_size");
+//                    Log.d("List_size",listSize);
+                    int list_size=Integer.parseInt(listSize);
+                    Intent intent;
+                    if (list_size==0){
+                        intent=new Intent(getContext(),AddressForm.class);
+                    }else {
+                        for (long x=1;x < (long)task.getResult().get("list_size");x++){
+                            addressModalList.add(new AddressModal(task.getResult().get("fullname_"+x).toString(),
+                            task.getResult().get("address_"+x).toString(),
+                                    task.getResult().get("pincode_"+x).toString(),
+                                    (boolean)task.getResult().get("selected_"+x)));
+                        }
+                        intent=new Intent(getContext(),DeliveryActivity.class);
+                    }
+                    startActivity(intent);
+                }else {
+                    String error=task.getException().getMessage();
+                    Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
 
 }

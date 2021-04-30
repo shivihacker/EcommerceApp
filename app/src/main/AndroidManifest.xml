@@ -3,7 +3,7 @@
     package="com.example.ecommerce">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -13,8 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activities.GooglePayMethod"/>
-        <activity android:name=".Activities.Address" />
+        <activity android:name=".Activities.MyAddressAct"></activity>
+        <activity android:name=".Activities.GooglePayMethod" />
+        <activity android:name=".Activities.AddressForm" />
         <activity android:name=".Activities.CategoryItemListActivity" />
         <activity android:name=".Activities.DeliveryActivity" />
         <activity android:name=".Activities.OrderDetailsActivity" />
@@ -39,6 +40,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.razorpay.ApiKey"
+            android:value="rzp_test_Kjnvy1TVKFNZu7" />
     </application>
 
 </manifest>

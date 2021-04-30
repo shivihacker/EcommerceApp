@@ -47,7 +47,7 @@ import com.skydoves.elasticviews.ElasticButton;
 import com.squareup.picasso.Picasso;
 
 public class ProfilePage extends AppCompatActivity {
-    RecyclerView profile_vertical;
+    Button viewAll;
     String[] str = new String[]{"", "", "", "", "", ""};
     String name, email, num, dob, gender;
     TextView uName, uemail, umobile, ugender, udob;
@@ -55,6 +55,7 @@ public class ProfilePage extends AppCompatActivity {
     Button editprof;
     LinearLayout logout, del_account;
     ImageView img;
+    public static final int MANAGE_ADDRESS=1;
     //   StorageReference storageReference;
     String uid, profile_img;
 
@@ -64,7 +65,7 @@ public class ProfilePage extends AppCompatActivity {
         setContentView(R.layout.activity_profile_page);
 
 
-        profile_vertical = findViewById(R.id.profile_vertical);
+        viewAll= findViewById(R.id.view_all_addresses_btn);
         logout = findViewById(R.id.logout);
         del_account = findViewById(R.id.dele_account);
         uName = findViewById(R.id.userName);
@@ -132,6 +133,14 @@ public class ProfilePage extends AppCompatActivity {
                 }
             }
         });
+        viewAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(),MyAddressAct.class);
+                intent.putExtra("MODE",MANAGE_ADDRESS);
+                startActivity(intent);
+            }
+        });
 
         logout.setOnClickListener(
                 new View.OnClickListener() {
@@ -150,11 +159,6 @@ public class ProfilePage extends AppCompatActivity {
                     // }
                 }
         );
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        profile_vertical.setLayoutManager(layoutManager);
-        profile_vertical.setHasFixedSize(true);
-        ProfileAdapter myAdapter = new ProfileAdapter(str, getApplicationContext());
-        profile_vertical.setAdapter(myAdapter);
 
     }
 

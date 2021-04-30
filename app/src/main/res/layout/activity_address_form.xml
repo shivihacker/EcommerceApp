@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activities.AddressForm">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+    </com.google.android.material.appbar.AppBarLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"/>
+
+    <EditText
+        android:id="@+id/city"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="City*"
+        android:ems="10"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="5dp"
+        android:inputType="text"
+        android:textColor="@color/black"
+        android:textSize="15sp"/>
+    <EditText
+        android:id="@+id/flat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Flat no., Building name*"
+        android:layout_gravity="center"
+        android:isScrollContainer="true"
+        android:ems="10"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="5dp"
+        android:inputType="textImeMultiLine"
+        android:textColor="@color/black"
+        android:textSize="15sp"/>
+    <EditText
+        android:id="@+id/locality"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Locality,area or street*"
+        android:ems="10"
+        android:isScrollContainer="true"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="5dp"
+        android:inputType="textImeMultiLine"
+        android:textColor="@color/black"
+        android:textSize="15sp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/pincode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Pincode"
+            android:ems="10"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="5dp"
+            android:inputType="text"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:textSize="15sp"/>
+        <Spinner
+            android:id="@+id/state_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/bg_line"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="5dp" />
+    </LinearLayout>
+    <EditText
+        android:id="@+id/landmark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Landmark (Optional)"
+        android:ems="10"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="5dp"
+        android:inputType="text"
+        android:textColor="@color/black"
+        android:textSize="15sp"/>
+
+    <View
+        android:id="@+id/divider4"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginVertical="10dp"
+        android:background="?android:attr/listDivider" />
+
+    <EditText
+        android:id="@+id/name_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Name*"
+        android:ems="10"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="5dp"
+        android:inputType="textPersonName"
+        android:textColor="@color/black"
+        android:textSize="15sp"/>
+
+    <EditText
+        android:id="@+id/mob_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Mobile No."
+        android:ems="10"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="5dp"
+        android:inputType="number"
+        android:textColor="@color/black"
+        android:textSize="15sp"/>
+
+    <EditText
+        android:id="@+id/alternate_mob"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Alternate mobile no.(Optional)"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="5dp"
+        android:inputType="number"
+        android:textColor="@color/black"
+        android:textSize="15sp"/>
+
+    <Button
+        android:id="@+id/save_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@color/white"
+        android:layout_margin="16dp"
+        android:textSize="20dp"/>
+
+</LinearLayout>
