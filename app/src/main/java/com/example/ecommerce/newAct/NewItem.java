@@ -145,6 +145,13 @@ public class NewItem extends AppCompatActivity {
             //todo: search;
             return true;
         }else if (id==R.id.item_cart_icon){
+            MyCartFragment myCartFragment = new MyCartFragment();
+            //fragmentManager = getParentFragmentManager();
+            fragmentManager=getSupportFragmentManager();
+            fragmentTransaction =fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frame, myCartFragment);
+//                fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
             return true;
         }else if (id==android.R.id.home){
             finish();

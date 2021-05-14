@@ -9,9 +9,10 @@ public class MyWishlistModel {
     private String productPrice;
     private String cuttedPrice;
     private String paymentMethod;
+    private String colorCode;
 
     public MyWishlistModel(String productImage, String productTitle, long freeCoupons, String rating,
-                           String totalRating, String productPrice, String cuttedPrice, String paymentMethod) {
+                           String totalRating, String productPrice, String cuttedPrice, String paymentMethod,String colorCode) {
         this.productImage = productImage;
         this.productTitle = productTitle;
         this.freeCoupons = freeCoupons;
@@ -20,6 +21,7 @@ public class MyWishlistModel {
         this.productPrice = productPrice;
         this.cuttedPrice = cuttedPrice;
         this.paymentMethod = paymentMethod;
+        this.colorCode=colorCode;
     }
 
     public String getProductImage() {
@@ -84,5 +86,13 @@ public class MyWishlistModel {
 
     public void setPaymentMethod(String paymentMethod) {
         this.paymentMethod = paymentMethod;
+    }
+
+    public String getColorCode() {
+        return colorCode;
+    }
+
+    public void setColorCode(String colorCode) {
+        this.colorCode = colorCode;
     }
 }

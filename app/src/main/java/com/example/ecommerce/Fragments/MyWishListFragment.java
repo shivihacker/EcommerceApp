@@ -89,7 +89,8 @@ public class MyWishListFragment extends Fragment {
                                         documentSnapshot.getString("total_rating"),
                                         documentSnapshot.getString("product_price"),
                                         documentSnapshot.getString("cutted_price"),
-                                        documentSnapshot.getString("payment_method")));
+                                        documentSnapshot.getString("payment_method"),
+                                        documentSnapshot.getString("selected")));
                             }
                             myWishlistAdapter.notifyDataSetChanged();
                         }else {
