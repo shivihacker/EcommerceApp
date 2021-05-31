@@ -27,6 +27,7 @@ import com.example.ecommerce.Adapter.ItemShowViewPageAdap;
 import com.example.ecommerce.Adapter.MyWishlistAdapter;
 import com.example.ecommerce.Helper.Constaints;
 import com.example.ecommerce.Helper.SharedPrefManager;
+import com.example.ecommerce.Helper.WishlistSharedPref;
 import com.example.ecommerce.Model.ModelProducts;
 import com.example.ecommerce.Model.MyWishlistModel;
 import com.example.ecommerce.Model.SliderModel;
@@ -59,7 +60,7 @@ public class DetailsFragment extends Fragment {
     private ElasticButton buyNow, addToCart;
     private static boolean ALREADY_ADDED_TO_WISHLIST=false;
     List<String> wishlist;
-    List<MyWishlistModel> wishlistModelList;
+    List<MyWishlistModel> wishlistModelList=new ArrayList<MyWishlistModel>();
     ArrayList<SliderModel> sliderModelList;
     SliderHomeAdapter sliderHomeAdapter;
     DocumentSnapshot documentSnapshot;
@@ -97,8 +98,6 @@ public class DetailsFragment extends Fragment {
         Constaints.current_user=mAuth.getUid();
         Log.d("currentuser",Constaints.current_user);
         //list = new ArrayList<>();
-        getWishlistData();
-        colorData();
 
         price = view.findViewById(R.id.price);
         description = view.findViewById(R.id.detail_frag_description);
@@ -123,8 +122,17 @@ public class DetailsFragment extends Fragment {
         //sliderBanner();
        // newindicator.setViewPager(newviewpage);
         /////////////////viewpager////////////////////
+
+        String mywish = WishlistSharedPref.getInstance(getActivity()).getWishlist(Constaints.product_id);
+        Log.d("getWishlistProduct",""+mywish);
+        if(mywish.equals("1"))
+        {
+            addToWishlist.setImageTintList(ColorStateList.valueOf(Constaints.redColor));
+        }
+        else{
+            addToWishlist.setImageTintList(ColorStateList.valueOf(Constaints.greyColor));
+        }
         wishlist=new ArrayList<>();
-        wishlistModelList=new ArrayList<>();
         if (Constaints.recycler_position==0) {
             Log.d("recycler_position",""+Constaints.recycler_position);
             filterProductData("MOBILES", "mobile_products", Constaints.product_id);
@@ -240,17 +248,18 @@ public class DetailsFragment extends Fragment {
                 }else {
                     if (ALREADY_ADDED_TO_WISHLIST) {
                         i="0";
+                        WishlistSharedPref.getInstance(getContext()).deletewishlist(Constaints.product_id);
                         ALREADY_ADDED_TO_WISHLIST = false;
                         addToWishlist.setImageTintList(ColorStateList.valueOf(Constaints.greyColor));
                         getProduct_AddToWishlist(i);
                     } else {
                         i="1";
+                        WishlistSharedPref.getInstance(getContext()).setWishlist(Constaints.product_id,i);
                         ALREADY_ADDED_TO_WISHLIST=true;
                         addToWishlist.setImageTintList(ColorStateList.valueOf(Constaints.redColor));
                         getProduct_AddToWishlist(i);
-                        addWishlistData(Constaints.product_id);
                     //    wishlist.add(Constaints.product_id);
-                        Log.d("wishlistId",wishlist.get(0));
+                    //    Log.d("wishlistId",wishlist.get(0));
                         //Log.d("wishlistId",wishlist.get(1));
                         Toast.makeText(getContext(), "Added to wishlist Successfully", Toast.LENGTH_SHORT).show();
 
@@ -327,21 +336,6 @@ public class DetailsFragment extends Fragment {
         return view;
     }
 
-    void addWishlistData(String id){
-        wishlist.add(id);
-    }
-
-    void colorData(){
-        for (int i=0;i<wishlistModelList.size();i++){
-            if (wishlistModelList.get(i).getColorCode().equals(1)){
-                ALREADY_ADDED_TO_WISHLIST=true;
-                addToWishlist.setImageTintList(ColorStateList.valueOf(Constaints.redColor));
-            }else {
-                ALREADY_ADDED_TO_WISHLIST=false;
-                addToWishlist.setImageTintList(ColorStateList.valueOf(Constaints.greyColor));
-            }
-        }
-    }
     /////////////////////homeFragment Data////////////////
     public void filterProductData(String p_doc, String p_collection,String id) {
         firebaseFirestore.collection("CATEGORIES").document(p_doc).collection(p_collection).document(id).get()
@@ -552,6 +546,22 @@ public class DetailsFragment extends Fragment {
         _reference.set(productData).isSuccessful();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        for (int i=0;i<wishlistModelList.size();i++){
+            addToWishlist.setImageTintList(ColorStateList.valueOf(Constaints.greyColor));
+
+//            if (wishlistModelList.get(i).getColorCode().equals("1")){
+//                ALREADY_ADDED_TO_WISHLIST=true;
+//                addToWishlist.setImageTintList(ColorStateList.valueOf(Constaints.redColor));
+//            }else {
+//                ALREADY_ADDED_TO_WISHLIST=false;
+//                addToWishlist.setImageTintList(ColorStateList.valueOf(Constaints.greyColor));
+//            }
+        }
+
+    }
     public void getWishlistData() {
         firebaseFirestore.collection("whishlist").document(Constaints.current_user).collection("My_Wishlist").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

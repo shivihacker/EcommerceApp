@@ -22,6 +22,7 @@ import com.example.ecommerce.Helper.Constaints;
 import com.example.ecommerce.Model.ModelProducts;
 import com.example.ecommerce.R;
 import com.example.ecommerce.newAct.NewItem;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.skydoves.elasticviews.ElasticButton;
 import com.squareup.picasso.Picasso;
 
@@ -34,11 +35,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     int i;
     Context ctx;
     List<String> wishlist;
+    FirebaseFirestore firebaseFirestore;
 
     public ProductAdapter(Context ctx,ArrayList<ModelProducts> modelProductsList, int i) {
         this.ctx = ctx;
         this.modelProductsList = modelProductsList;
         this.i=i;
+        firebaseFirestore= FirebaseFirestore.getInstance();
     }
 
     @NonNull

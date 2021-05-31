@@ -172,7 +172,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             holder.deliveryCart_productName.setText(myCartModelList.get(position).getC_name());
             holder.deliveryCart_productPrice.setText(myCartModelList.get(position).getC_price());
             //////////////////////////////////////////
-            holder.deliverCart_number_quantity.setText((CharSequence) holder.mycart_number_quantity);
+            holder.deliverCart_number_quantity.setText(""+count);
 
             Picasso.get().load(myCartModelList.get(position).getC_img()).into(holder.deliveryCart_productImage);
 

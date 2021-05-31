@@ -38,7 +38,7 @@
             android:textColor="@color/black"/>
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/shipping_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
@@ -63,7 +63,7 @@
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/textView7"
+                android:id="@+id/shipping_phone_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

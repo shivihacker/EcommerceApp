@@ -90,14 +90,7 @@ public class MyCartFragment extends Fragment {
         mycartContinueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HashMap<String, Object> productData = new HashMap();
-                productData.put("list_size","0");
-                DocumentReference _reference = firebaseFirestore.collection("whishlist").document(Constaints.current_user)
-                        .collection("data").document("My_Address");
-                _reference.set(productData).isSuccessful();
-                Intent intent=new Intent(getActivity(),DeliveryActivity.class);
-                startActivity(intent);
-               // loadAddresses();
+                checkAddressInDatabase(Constaints.current_user);
             }
         });
 
@@ -194,5 +187,37 @@ public class MyCartFragment extends Fragment {
             }
         });
     }
+
+    public void checkAddressInDatabase(String id) {
+        FirebaseFirestore.getInstance().collection("user_address").document(Constaints.current_user).collection("address").document("address1").get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            DocumentSnapshot documentSnapshot = task.getResult();
+                            if(documentSnapshot.exists())
+                            {
+                                Intent intent=new Intent(getActivity(),DeliveryActivity.class);
+                                startActivity(intent);
+
+                            }else{
+                                Intent intent = new Intent(getActivity(),AddressForm.class);
+                                startActivity(intent);
+                            }
+
+
+//                            Intent intent=new Intent(getActivity(),DeliveryActivity.class);
+//                            startActivity(intent);
+
+
+                        }else {
+                            Toast.makeText(getContext(),"Error",Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                });
+    }
+
 
 }

@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -163,7 +164,10 @@
                 android:textColor="@color/white"
                 android:layout_margin="16dp"
                 android:textSize="20dp"/>
+
         </LinearLayout>
     </ScrollView>
+
+
 
 </LinearLayout>

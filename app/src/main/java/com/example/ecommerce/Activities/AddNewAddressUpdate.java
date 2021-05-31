@@ -1,6 +1,5 @@
 package com.example.ecommerce.Activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -13,13 +12,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.example.ecommerce.Helper.Constaints;
 import com.example.ecommerce.Model.AddressModal;
 import com.example.ecommerce.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -28,19 +24,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AddressForm extends AppCompatActivity {
-
+public class AddNewAddressUpdate extends AppCompatActivity {
     private EditText city,locality,flatNo,pincode,landmark,name,mobileno,alternatemob;
     private Button saveBtn;
     private String selectedState;
     private String[] stateList = {"Up","mp"};
-//    private String[] stateList = getResources().getStringArray(R.array.india_states);
+    //            getResources().getStringArray(R.array.india_states);
     private Spinner state;
     private List<AddressModal> addressModalList;
+    static int count=1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_address_form);
+        setContentView(R.layout.activity_add_new_address_update);
         city=findViewById(R.id.city);
         locality=findViewById(R.id.locality);
         flatNo=findViewById(R.id.flat);
@@ -65,7 +62,7 @@ public class AddressForm extends AppCompatActivity {
         state.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-               selectedState=stateList[position];
+                selectedState=stateList[position];
             }
 
             @Override
@@ -96,8 +93,10 @@ public class AddressForm extends AppCompatActivity {
                                         }
                                         addAddress.put("address"+addressModalList.size()+1,fullAddress);
                                         addAddress.put("pincode"+addressModalList.size()+1,pincode.getText().toString());
-                                        addAddress(name.getText().toString().trim(), mobileno.getText().toString().trim(),fullAddress, pincode.getText().toString().trim());
 
+                                        count++;
+                                        String c = String.valueOf(count);
+                                        addAddress(name.getText().toString().trim(), mobileno.getText().toString().trim(),fullAddress, pincode.getText().toString().trim(), "address"+count);
 //                                        FirebaseFirestore.getInstance().collection("wishlist").document(Constaints.current_user)
 //                                                .collection("data").document("My_Address").update(addAddress).addOnCompleteListener(
 //                                                new OnCompleteListener<Void>() {
@@ -127,7 +126,7 @@ public class AddressForm extends AppCompatActivity {
                             flatNo.requestFocus();
                         }
                     }else {
-                      locality.requestFocus();
+                        locality.requestFocus();
                     }
                 }else {
                     city.requestFocus();
@@ -136,7 +135,8 @@ public class AddressForm extends AppCompatActivity {
         });
     }
 
-    void addAddress(String name, String mobile, String address, String pincode){
+
+    void addAddress(String name, String mobile, String address, String pincode, String addresss){
 
         HashMap<String, Object> productData = new HashMap();
         productData.put("user_id", Constaints.current_user);
@@ -144,13 +144,13 @@ public class AddressForm extends AppCompatActivity {
         productData.put("address", address);
         productData.put("phone", mobile);
         productData.put("pincode", pincode);
-        productData.put("select", true);
+        productData.put("select", false);
 
         DocumentReference _reference = FirebaseFirestore.getInstance().collection("user_address")
-                .document(Constaints.current_user).collection("address").document("address1");
+                .document(Constaints.current_user).collection("address").document(addresss);
         _reference.set(productData).isSuccessful();
 
-        Intent i = new Intent(AddressForm.this,DeliveryActivity.class);
+        Intent i = new Intent(AddNewAddressUpdate.this,DeliveryActivity.class);
         startActivity(i);
     }
 }
