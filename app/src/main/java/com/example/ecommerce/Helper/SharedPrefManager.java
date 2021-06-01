@@ -7,6 +7,7 @@ package com.example.ecommerce.Helper;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.example.ecommerce.Activities.LoginPage;
 import com.example.ecommerce.Model.UserDetails;
@@ -118,6 +119,21 @@ public void logout() {
        editor.putStringSet("key_wishlist_item", Collections.singleton(product_id));
        editor.apply();
    }
+    public void setAddress(String key,String name, String address,String pincode){
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key, name);
+        editor.putString(key, address);
+        editor.putString(key, pincode);
+        editor.apply();
+        Log.d("addressData",""+getAddress(key));
+    }
+
+    public String getAddress(String key) {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String value = sharedPreferences.getString(key,"");
+        return value;
+    }
 
 }
 

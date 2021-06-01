@@ -26,14 +26,8 @@ public class WishlistSharedPref {
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         editor.putString(key, wishlistValue);
-
-
         editor.apply();
         Log.d("WishlistSharedData",""+getWishlist(key));
-
-
-
-
     }
 
     public String getWishlist(String key) {

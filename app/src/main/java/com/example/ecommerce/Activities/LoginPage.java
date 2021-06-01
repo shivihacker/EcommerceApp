@@ -312,7 +312,6 @@ public class LoginPage extends AppCompatActivity {
                                                SharedPrefManager.getInstance(getApplicationContext()).userLogin(current_user,name,email,phone,password);
                                                Intent i = new Intent(LoginPage.this, HomePage.class);
                                                startActivity(i);
-
                                                finish();
 
                                            }

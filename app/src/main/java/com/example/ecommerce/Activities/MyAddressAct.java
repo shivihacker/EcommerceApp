@@ -88,7 +88,7 @@ public class MyAddressAct extends AppCompatActivity {
                             }else {
                                 deliverBtn.setVisibility(View.GONE);
                             }
-                            addressAdapter=new AddressAdapter(addressModalList,mode);
+                            addressAdapter=new AddressAdapter(getApplicationContext(),addressModalList,mode);
                             myaddressRecyclerview.setAdapter(addressAdapter);
                             ((SimpleItemAnimator)myaddressRecyclerview.getItemAnimator()).setSupportsChangeAnimations(false);
                             addressAdapter.notifyDataSetChanged();

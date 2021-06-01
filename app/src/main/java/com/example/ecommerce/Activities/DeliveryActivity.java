@@ -62,6 +62,9 @@ public class DeliveryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delivery);
+        /////////////////////////////////////
+        SharedPrefManager.getInstance(getApplicationContext()).getAddress(Constaints.current_user);
+
         deliveryRecyclerview=findViewById(R.id.delivery_recyclerview);
         changeOrAddNewAddressBtn=findViewById(R.id.change_or_add_new_adddress);
         totalAmount=findViewById(R.id.total_amount);

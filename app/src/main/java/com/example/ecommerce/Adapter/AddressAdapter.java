@@ -1,5 +1,6 @@
 package com.example.ecommerce.Adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ecommerce.Helper.Constaints;
+import com.example.ecommerce.Helper.SharedPrefManager;
+import com.example.ecommerce.Helper.WishlistSharedPref;
 import com.example.ecommerce.Model.AddressModal;
 import com.example.ecommerce.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
@@ -21,11 +29,14 @@ import static com.example.ecommerce.Activities.ProfilePage.MANAGE_ADDRESS;
 
 public class AddressAdapter  extends RecyclerView.Adapter<AddressAdapter.ViewHolder>{
 
+     Context ctx;
      List<AddressModal> addressModalList;
      private int MODE;
      private int preSelectedPosition=-1;
+    String name,fullAddress,pincodeNo;
 
-    public AddressAdapter(List<AddressModal> addressModalList, int MODE) {
+    public AddressAdapter(Context ctx,List<AddressModal> addressModalList, int MODE) {
+        this.ctx=ctx;
         this.addressModalList = addressModalList;
         this.MODE = MODE;
     }
@@ -82,8 +93,11 @@ public class AddressAdapter  extends RecyclerView.Adapter<AddressAdapter.ViewHol
                         if (preSelectedPosition!=position){
                             addressModalList.get(position).setSelected(true);
                             addressModalList.get(preSelectedPosition).setSelected(false);
+                            getAdressData(position);
                             refreshItem(preSelectedPosition,position);
                             preSelectedPosition=position;
+                            SharedPrefManager.getInstance(ctx).setAddress(Constaints.current_user,name,fullAddress,pincodeNo);
+
                         }
                     }
                 });
@@ -108,4 +122,21 @@ public class AddressAdapter  extends RecyclerView.Adapter<AddressAdapter.ViewHol
             }
         }
     }
+
+    private void getAdressData(int position) {
+        FirebaseFirestore.getInstance().collection("user_address")
+                .document(Constaints.current_user).collection("address").document("address"+position)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    name=documentSnapshot.getString("firstName");
+                    fullAddress=documentSnapshot.getString("address");
+                    pincodeNo=documentSnapshot.getString("pincode");
+                }
+            }
+        });
+    }
+
 }

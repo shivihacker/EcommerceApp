@@ -35,6 +35,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -59,6 +60,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     private int count;
     private double cuttedPrice;
     String totalSum;
+    String number;  //////////////used in bindViewHolder in i==1
     TextView totalAmount;
     private long coupons;
     int i;
@@ -97,9 +99,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             final MyCartModel myCartModel = myCartModelList.get(position);
             holder.mycart_productName.setText(myCartModelList.get(position).getC_name());
             holder.mycart_productPrice.setText(myCartModelList.get(position).getC_price());
-
             Picasso.get().load(myCartModelList.get(position).getC_img()).into(holder.mycart_productImage);
-
             if(quantity == 1)
             {
                 holder.mycart_number_quantity.setText(String.valueOf(quantity));
@@ -126,13 +126,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             holder.itemView.findViewById(R.id.mycart_decrease_sign).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //  String quantity = holder.mycart_number_quantity.getText().toString();
-//                if (counter == 0) {
-//                    counter = 0;
-//                }
-//                else{
-//                    counter--;
-//                }
                     int count= Integer.parseInt(String.valueOf(holder.mycart_number_quantity.getText()));
                     if (count == 1) {
                         holder.mycart_number_quantity.setText("1");
@@ -172,8 +165,18 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             holder.deliveryCart_productName.setText(myCartModelList.get(position).getC_name());
             holder.deliveryCart_productPrice.setText(myCartModelList.get(position).getC_price());
             //////////////////////////////////////////
+//            firebaseFirestore.collection("whishlist").document(Constaints.current_user).collection("my_cart").document(p_id)
+//                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                @Override
+//                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                    if (task.isSuccessful()) {
+//                        DocumentSnapshot documentSnapshot = task.getResult();
+//                        number = documentSnapshot.getString("p_count");
+//                    }
+//                }
+//            });
+            /////////////////////////////
             holder.deliverCart_number_quantity.setText(""+count);
-
             Picasso.get().load(myCartModelList.get(position).getC_img()).into(holder.deliveryCart_productImage);
 
             if(quantity == 1)
