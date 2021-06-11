@@ -175,6 +175,7 @@ public class MyCartFragment extends Fragment {
                             addressModalList.add(new AddressModal(task.getResult().get("fullname_"+x).toString(),
                             task.getResult().get("address_"+x).toString(),
                                     task.getResult().get("pincode_"+x).toString(),
+                                    task.getResult().get("phone"+x).toString(),
                                     (boolean)task.getResult().get("selected_"+x)));
                         }
                         intent=new Intent(getContext(),DeliveryActivity.class);

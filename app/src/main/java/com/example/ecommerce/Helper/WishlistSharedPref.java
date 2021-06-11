@@ -9,6 +9,9 @@ public class WishlistSharedPref {
     private static Context mCtx;
     private static final String SHARED_PREF_NAME = "wishlist";
 
+    private static final String ADDRESS = "address";
+    private static final String PINCODE = "pinarea";
+    private static final String PHONE = "phone";
 
     public WishlistSharedPref(Context context) {
         mCtx = context;
@@ -65,4 +68,38 @@ public class WishlistSharedPref {
 
         return value;
     }
+    public void setAddress(String address,String pincode, String phone){
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(ADDRESS, address);
+        editor.putString(PINCODE, pincode);
+        editor.putString(PHONE, phone);
+        editor.apply();
+        Log.d("WishlistSharedData"," "+phone+" "+address);
+    }
+    public String getAddress(String key) {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String value = sharedPreferences.getString(ADDRESS,"");
+
+        return value;
+    }
+//    public String getPhone(String key) {
+//        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+//        String value = sharedPreferences.getString(key,"");
+//
+//        return value;
+//    }
+    public String getPhone(String key) {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String value = sharedPreferences.getString(PHONE,"");
+
+        return value;
+    }
+    public String getPincode(String key) {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String value = sharedPreferences.getString(PINCODE,"");
+
+        return value;
+    }
+
 }

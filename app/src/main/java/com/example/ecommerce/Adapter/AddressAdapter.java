@@ -33,7 +33,7 @@ public class AddressAdapter  extends RecyclerView.Adapter<AddressAdapter.ViewHol
      List<AddressModal> addressModalList;
      private int MODE;
      private int preSelectedPosition=-1;
-    String name,fullAddress,pincodeNo;
+    String name,fullAddress,pincodeNo,phoneNo;
 
     public AddressAdapter(Context ctx,List<AddressModal> addressModalList, int MODE) {
         this.ctx=ctx;
@@ -53,8 +53,9 @@ public class AddressAdapter  extends RecyclerView.Adapter<AddressAdapter.ViewHol
         String name=addressModalList.get(position).getFullname();
         String address=addressModalList.get(position).getAddress();
         String pincode=addressModalList.get(position).getPincode();
+        String phone=addressModalList.get(position).getPhone();
         Boolean selected=addressModalList.get(position).getSelected();
-        holder.setData(name,address,pincode,selected,position);
+        holder.setData(name,address,pincode,phone,selected,position);
     }
 
     @Override
@@ -63,7 +64,7 @@ public class AddressAdapter  extends RecyclerView.Adapter<AddressAdapter.ViewHol
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView fullname,address,pincode;
+        private TextView fullname,address,pincode,mob;
         private ImageView icon;
         private LinearLayout optionContainer;
         public ViewHolder(@NonNull View itemView) {
@@ -71,13 +72,15 @@ public class AddressAdapter  extends RecyclerView.Adapter<AddressAdapter.ViewHol
             fullname=itemView.findViewById(R.id.fullname_layout);
             address=itemView.findViewById(R.id.address_layout);
             pincode=itemView.findViewById(R.id.pincode_layout);
+            mob=itemView.findViewById(R.id.mobile_layout);
             icon=itemView.findViewById(R.id.icon_address);
             optionContainer=itemView.findViewById(R.id.option_container);
         }
-        private void setData(String username, String userAddress, String userPincode, Boolean selected, final int position){
+        private void setData(String username, String userAddress, String userPincode,String userPhone, Boolean selected, final int position){
             fullname.setText(username);
             address.setText(userAddress);
-            pincode.setText(userPincode);
+            pincode.setText("Pincode : "+userPincode);
+            mob.setText(userPhone);
 
             if (MODE==SELECT_ADDRESS){
                 icon.setImageResource(R.drawable.check);
@@ -96,7 +99,7 @@ public class AddressAdapter  extends RecyclerView.Adapter<AddressAdapter.ViewHol
                             getAdressData(position);
                             refreshItem(preSelectedPosition,position);
                             preSelectedPosition=position;
-                            SharedPrefManager.getInstance(ctx).setAddress(Constaints.current_user,name,fullAddress,pincodeNo);
+                            WishlistSharedPref.getInstance(ctx).setAddress(addressModalList.get(position).getAddress(),addressModalList.get(position).getPincode(),addressModalList.get(position).getPhone());
 
                         }
                     }
@@ -134,6 +137,7 @@ public class AddressAdapter  extends RecyclerView.Adapter<AddressAdapter.ViewHol
                     name=documentSnapshot.getString("firstName");
                     fullAddress=documentSnapshot.getString("address");
                     pincodeNo=documentSnapshot.getString("pincode");
+                    phoneNo=documentSnapshot.getString("phone");
                 }
             }
         });

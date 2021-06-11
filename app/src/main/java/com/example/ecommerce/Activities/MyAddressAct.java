@@ -79,6 +79,7 @@ public class MyAddressAct extends AppCompatActivity {
                                 AddressModal addressModal = new AddressModal(documentSnapshot.getString("firstName"),
                                         documentSnapshot.getString("address"),
                                         documentSnapshot.getString("pincode"),
+                                        documentSnapshot.getString("phone"),
                                         documentSnapshot.getBoolean("select"));
                                 addressModalList.add(addressModal);
                             }

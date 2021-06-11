@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activities.AddNewAddressUpdate"></activity>
+        <activity android:name=".Activities.OrderNewActivity"></activity>
+        <activity android:name=".Activities.AddNewAddressUpdate" />
         <activity android:name=".Activities.MyAddressAct" />
         <activity android:name=".Activities.GooglePayMethod" />
         <activity android:name=".Activities.AddressForm" />

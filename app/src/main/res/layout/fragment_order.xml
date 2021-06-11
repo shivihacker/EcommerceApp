@@ -3,11 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:elevation="5dp"
+    android:background="@color/white"
     tools:context=".Fragments.OrderFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/my_order_recyclerview"
+    <ScrollView
         android:layout_width="match_parent"
-        android:background="#50ECE7E7"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/my_order_recyclerview"
+                android:layout_width="match_parent"
+                android:background="#50ECE7E7"
+                android:elevation="5dp"
+                android:layout_marginBottom="10dp"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </ScrollView>
 </FrameLayout>

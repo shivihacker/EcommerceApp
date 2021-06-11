@@ -2,21 +2,30 @@ package com.example.ecommerce.Model;
 
 public class MyOrderItemModel {
 
-    private int productImage;
+    private String c_id,productImage;
     private String productTitle;
-    private String deliveryStatus;
+   // private String deliveryStatus;
 
-    public MyOrderItemModel(int productImage, String productTitle, String deliveryStatus) {
+    public MyOrderItemModel(String c_id,String productImage, String productTitle) {
+        this.c_id = c_id;
         this.productImage = productImage;
         this.productTitle = productTitle;
-        this.deliveryStatus = deliveryStatus;
+     //   this.deliveryStatus = deliveryStatus;
     }
 
-    public int getProdutImage() {
+    public String getC_id() {
+        return c_id;
+    }
+
+    public void setC_id(String c_id) {
+        this.c_id = c_id;
+    }
+
+    public String getProdutImage() {
         return productImage;
     }
 
-    public void setProdutImage(int produtImage) {
+    public void setProdutImage(String produtImage) {
         this.productImage = produtImage;
     }
 
@@ -28,11 +37,11 @@ public class MyOrderItemModel {
         this.productTitle = productTitle;
     }
 
-    public String getDeliveryStatus() {
-        return deliveryStatus;
-    }
-
-    public void setDeliveryStatus(String deliveryStatus) {
-        this.deliveryStatus = deliveryStatus;
-    }
+//    public String getDeliveryStatus() {
+//        return deliveryStatus;
+//    }
+//
+//    public void setDeliveryStatus(String deliveryStatus) {
+//        this.deliveryStatus = deliveryStatus;
+//    }
 }

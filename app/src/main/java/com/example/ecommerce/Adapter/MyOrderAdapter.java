@@ -1,5 +1,6 @@
 package com.example.ecommerce.Adapter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,30 +14,52 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.ecommerce.Activities.OrderDetailsActivity;
 import com.example.ecommerce.Model.MyOrderItemModel;
 import com.example.ecommerce.R;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHolder> {
 
     private List<MyOrderItemModel> myOrderItemModelList;
+    Context ctx;
+    FirebaseFirestore firebaseFirestore;
+    int i;
 
-    public MyOrderAdapter(List<MyOrderItemModel> myOrderItemModelList) {
+    public MyOrderAdapter(List<MyOrderItemModel> myOrderItemModelList, Context ctx,int i) {
         this.myOrderItemModelList = myOrderItemModelList;
+        firebaseFirestore= FirebaseFirestore.getInstance();
+        this.ctx = ctx;
+        this.i=i;
     }
 
     @NonNull
     @Override
     public MyOrderAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.my_orders_item,parent,false);
+        View view=null;
+        if (i==0){
+            view= LayoutInflater.from(parent.getContext()).inflate(R.layout.my_orders_item,parent,false);
+        }else if (i==1){
+            view= LayoutInflater.from(parent.getContext()).inflate(R.layout.my_orders_item,parent,false);
+        }
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyOrderAdapter.ViewHolder holder, int position) {
-         int resource = myOrderItemModelList.get(position).getProdutImage();
-         String title = myOrderItemModelList.get(position).getProductTitle();
-         String deliveryDate = myOrderItemModelList.get(position).getDeliveryStatus();
-         holder.setData(resource,title,deliveryDate);
+        if (i==0){
+            String title = myOrderItemModelList.get(position).getProductTitle();
+            // String deliveryDate = myOrderItemModelList.get(position).getDeliveryStatus();
+            Picasso.get().load(myOrderItemModelList.get(position).getProdutImage()).into(holder.orderItemImage);
+
+            holder.setData(title);
+        }else if (i==1){
+            String title = myOrderItemModelList.get(position).getProductTitle();
+            // String deliveryDate = myOrderItemModelList.get(position).getDeliveryStatus();
+            Picasso.get().load(myOrderItemModelList.get(position).getProdutImage()).into(holder.orderItemImage);
+
+            holder.setData(title);
+        }
 
     }
 
@@ -52,22 +75,35 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
 
         public ViewHolder(@NonNull final View itemView) {
             super(itemView);
-            orderItemImage=itemView.findViewById(R.id.order_item_image);
-            orderItemName=itemView.findViewById(R.id.order_item_name);
-            orderItemDeliveryStatus=itemView.findViewById(R.id.order_item_status);
+            if (i==0){
+                orderItemImage=itemView.findViewById(R.id.order_item_image);
+                orderItemName=itemView.findViewById(R.id.order_item_name);
+                orderItemDeliveryStatus=itemView.findViewById(R.id.order_item_status);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent orderDetailedIntent=new Intent(itemView.getContext(), OrderDetailsActivity.class);
-                    itemView.getContext().startActivity(orderDetailedIntent);
-                }
-            });
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent orderDetailedIntent=new Intent(itemView.getContext(), OrderDetailsActivity.class);
+                        itemView.getContext().startActivity(orderDetailedIntent);
+                    }
+                });
+            }else if (i==1){
+                orderItemImage=itemView.findViewById(R.id.order_item_image);
+                orderItemName=itemView.findViewById(R.id.order_item_name);
+                orderItemDeliveryStatus=itemView.findViewById(R.id.order_item_status);
+
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent orderDetailedIntent=new Intent(itemView.getContext(), OrderDetailsActivity.class);
+                        itemView.getContext().startActivity(orderDetailedIntent);
+                    }
+                });
+            }
         }
-        private void setData(int resource,String title,String deliveryDate){
-            orderItemImage.setImageResource(resource);
+        private void setData(String title){
             orderItemName.setText(title);
-            orderItemDeliveryStatus.setText(deliveryDate);
+         //   orderItemDeliveryStatus.setText(deliveryDate);
         }
     }
 }

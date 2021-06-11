@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.ecommerce.Adapter.CategoryAdapter;
 import com.example.ecommerce.Adapter.ProductAdapter;
 import com.example.ecommerce.Helper.Constaints;
+import com.example.ecommerce.Helper.SharedPrefManager;
 import com.example.ecommerce.Model.CategoryModel;
 import com.example.ecommerce.Model.ModelProducts;
 import com.example.ecommerce.Model.SliderModel;
@@ -43,7 +44,6 @@ public class CategoryItemListActivity extends AppCompatActivity {
     SliderHomeAdapter sliderHomeAdapter;
     ProductAdapter productAdapter;
     private FirebaseFirestore firebaseFirestore;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -206,7 +206,7 @@ public class CategoryItemListActivity extends AppCompatActivity {
                                 modelProductsList.add(modelProducts);
                                 Log.d("name", modelProducts.getImage());
                             }
-                            productAdapter.notifyDataSetChanged();
+                            SharedPrefManager.getInstance(getApplicationContext()).setMoreHomeProduct("CATEGORIES","MOBILES","products");                            productAdapter.notifyDataSetChanged();
 //                            productAdapter=new ProductAdapter(modelProductsList,0);
 //                            grid.setAdapter(productAdapter);
                         }else {
@@ -217,7 +217,7 @@ public class CategoryItemListActivity extends AppCompatActivity {
                 });
     }
 
-    public void getProducts(String p_doc, String p_collection,String collection_type) {
+    public void getProducts(final String p_doc, final String p_collection, final String collection_type) {
         firebaseFirestore.collection("CATEGORIES")
                 .document(p_doc).collection(p_collection).document(collection_type).collection("products").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -240,6 +240,8 @@ public class CategoryItemListActivity extends AppCompatActivity {
                                 Log.d("nameeee", modelProducts.getName());
                                 Log.d("priceee", modelProducts.getPrice());
                             }
+                            SharedPrefManager.getInstance(getApplicationContext()).setProductPath("CATEGORIES",p_doc,
+                                    p_collection,collection_type,"products");
                             productAdapter.notifyDataSetChanged();
 //                            productAdapter=new ProductAdapter(modelProductsList,0);
 //                            grid.setAdapter(productAdapter);

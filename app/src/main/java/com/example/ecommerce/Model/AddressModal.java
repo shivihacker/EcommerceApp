@@ -2,13 +2,14 @@ package com.example.ecommerce.Model;
 
 public class AddressModal {
 
-    private String fullname,address,pincode;
+    private String fullname,address,pincode,phone;
     private Boolean selected;
 
-    public AddressModal(String fullname, String address, String pincode,Boolean selected) {
+    public AddressModal(String fullname, String address, String pincode,String phone,Boolean selected) {
         this.fullname = fullname;
         this.address = address;
         this.pincode = pincode;
+        this.phone = phone;
         this.selected = selected;
     }
 
@@ -34,6 +35,14 @@ public class AddressModal {
 
     public void setPincode(String pincode) {
         this.pincode = pincode;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public Boolean getSelected() {

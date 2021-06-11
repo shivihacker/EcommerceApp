@@ -1,6 +1,8 @@
 package com.example.ecommerce.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,6 +18,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.ecommerce.Fragments.MyCartFragment;
+import com.example.ecommerce.Fragments.OrderFragment;
 import com.example.ecommerce.Helper.Constaints;
 import com.example.ecommerce.Helper.SharedPrefManager;
 import com.example.ecommerce.R;
@@ -34,6 +38,9 @@ import java.util.HashMap;
 public class GooglePayMethod extends AppCompatActivity implements PaymentResultListener {
 
     EditText amount, note, email, mobileNo;
+    private OrderFragment orderFragment;
+    private FragmentManager fragmentManager;
+    private FragmentTransaction fragmentTransaction;
     Button send;
     double amt;
     String TAG ="main";
@@ -142,7 +149,13 @@ public class GooglePayMethod extends AppCompatActivity implements PaymentResultL
 
     @Override
     public void onPaymentSuccess(String s){
+
         Toast.makeText(getApplicationContext(), "Payment Successfull", Toast.LENGTH_SHORT).show();
+        Intent  i = new Intent(GooglePayMethod.this, OrderNewActivity.class);
+        i.putExtra("pay_details",s);
+        startActivity(i);
+        finish();
+
     }
 
     @Override

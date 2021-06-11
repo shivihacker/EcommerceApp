@@ -1,17 +1,12 @@
-package com.example.ecommerce.Fragments;
-
-import android.content.Intent;
-import android.os.Bundle;
+package com.example.ecommerce.Activities;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.content.Intent;
+import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,47 +26,47 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
+public class OrderNewActivity extends AppCompatActivity {
 
-public class OrderFragment extends Fragment {
-    private RecyclerView myOrderRecyclerView;
-//    private ArrayList<MyCartModel> myCartModelList;
+    private RecyclerView cartRecycle;
     private ArrayList<MyOrderItemModel> myCartModelList;
     FirebaseFirestore firebaseFirestore;
     private MyOrderAdapter orderNewActivityAdapter;
     TextView receipt, shipping_address, phone, total_amount;
+
     Button go_to_home;
     String pay;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_order_new);
 
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view=inflater.inflate(R.layout.fragment_order, container, false);
-
-        myOrderRecyclerView=view.findViewById(R.id.my_order_recyclerview);
+        cartRecycle=findViewById(R.id.my_order_recyclerview);
+        receipt = findViewById(R.id.receipt);
+        shipping_address =findViewById(R.id.order_shipping_address1);
+        phone =findViewById(R.id.order_shipping_phone_no);
+        total_amount =findViewById(R.id.order_total_amount);
         firebaseFirestore= FirebaseFirestore.getInstance();
         getCartDataa();
 
-        LinearLayoutManager layoutManager=new LinearLayoutManager(getContext());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        myOrderRecyclerView.setLayoutManager(layoutManager);
+        Intent i = getIntent();
+        pay = i.getStringExtra("pay_details");
 
- //       List<MyOrderItemModel> myOrderItemModelList=new ArrayList<>();
+        LinearLayoutManager layoutManager=new LinearLayoutManager(getApplicationContext());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        cartRecycle.setLayoutManager(layoutManager);
         myCartModelList =new ArrayList<>();
-        orderNewActivityAdapter=new MyOrderAdapter(myCartModelList,getActivity(),1);
-        myOrderRecyclerView.setAdapter(orderNewActivityAdapter);
-//        MyOrderAdapter myOrderAdapter=new MyOrderAdapter(myOrderItemModelList);
-//        myOrderRecyclerView.setAdapter(myOrderAdapter);
-//        myOrderAdapter.notifyDataSetChanged();
-        return view;
+        orderNewActivityAdapter=new MyOrderAdapter(myCartModelList,getApplicationContext(),0);
+        cartRecycle.setAdapter(orderNewActivityAdapter);
+
+        receipt.setText(pay);
+        shipping_address.setText(WishlistSharedPref.getInstance(getApplicationContext()).getAddress("ADDRESS"));
+        phone.setText(WishlistSharedPref.getInstance(getApplicationContext()).getPhone("PHONE"));
+
+        return;
     }
 
     public void getCartDataa() {
@@ -82,7 +77,7 @@ public class OrderFragment extends Fragment {
                         double sellprice=0.0;
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-//                                total_amount.setText(documentSnapshot.get("total_amount").toString());
+                                total_amount.setText(documentSnapshot.get("total_amount").toString());
                                 double a = Double.parseDouble(documentSnapshot.getString("cutted_price"));
 
 //                               int c_applied = Integer.parseInt(documentSnapshot.getString("coupons_applied"));
@@ -97,36 +92,36 @@ public class OrderFragment extends Fragment {
 //                                        0,
 //                                        0,
 //                                        count_item
-                                        ));
+                                ));
                             }
-                      //      saveOrderData(myCartModelList);
+                            saveOrderData(myCartModelList);
                             orderNewActivityAdapter.notifyDataSetChanged();
 
 
                         }else {
                             String error=task.getException().getMessage();
-                            Toast.makeText(getActivity(),error, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),error, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
 
-//    public void saveOrderData(ArrayList<MyOrderItemModel> arrayList) {
-//        ArrayList<String> myList = new ArrayList<>();
-//        HashMap<String, String> orderData = new HashMap();
-//        orderData.put("uid", Constaints.current_user);
-//        orderData.put("taxation_id", pay);
-//        orderData.put("total_amount", total_amount.getText().toString().trim());
-//        orderData.put("address", WishlistSharedPref.getInstance(getActivity()).getAddress("ADDRESS"));
-//        orderData.put("phone", WishlistSharedPref.getInstance(getActivity()).getPhone("PHONE"));
-//        for (int i =0; i<myCartModelList.size();i++)
-//        {
-//            myList.add(myCartModelList.get(i).getC_id());
-//        }
-//        orderData.put("product_list", myList.toString());
-//
-//        DocumentReference _reference = FirebaseFirestore.getInstance().collection("order")
-//                .document(Constaints.current_user).collection("my_order").document(Constaints.product_id);
-//        _reference.set(orderData).isSuccessful();
-//    }
+    public void saveOrderData(ArrayList<MyOrderItemModel> arrayList) {
+        ArrayList<String> myList = new ArrayList<>();
+        HashMap<String, String> orderData = new HashMap();
+        orderData.put("uid", Constaints.current_user);
+        orderData.put("taxation_id", pay);
+        orderData.put("total_amount", total_amount.getText().toString().trim());
+        orderData.put("address", WishlistSharedPref.getInstance(getApplicationContext()).getAddress("ADDRESS"));
+        orderData.put("phone", WishlistSharedPref.getInstance(getApplicationContext()).getPhone("PHONE"));
+        for (int i =0; i<myCartModelList.size();i++)
+        {
+            myList.add(myCartModelList.get(i).getC_id());
+        }
+        orderData.put("product_list", myList.toString());
+
+        DocumentReference _reference = FirebaseFirestore.getInstance().collection("order")
+                .document(Constaints.current_user).collection("my_order").document(Constaints.product_id);
+        _reference.set(orderData).isSuccessful();
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.ecommerce.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -7,12 +8,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.ecommerce.Adapter.MoreItemAdapter;
 import com.example.ecommerce.Adapter.MyAdapter;
 import com.example.ecommerce.Fragments.MyCartFragment;
+import com.example.ecommerce.Model.ModelProducts;
 import com.example.ecommerce.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.skydoves.elasticviews.ElasticButton;
 
 public class MoreItem extends AppCompatActivity {
@@ -49,7 +57,7 @@ public class MoreItem extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager=new GridLayoutManager(this,2);
         vertical_more.setLayoutManager(layoutManager);
         vertical_more.setHasFixedSize(true);
-        MoreItemAdapter myAdapter=new MoreItemAdapter(str,getApplicationContext());
-        vertical_more.setAdapter(myAdapter);
+       // MoreItemAdapter myAdapter=new MoreItemAdapter(getApplicationContext(),);
+      //  vertical_more.setAdapter(myAdapter);
     }
 }

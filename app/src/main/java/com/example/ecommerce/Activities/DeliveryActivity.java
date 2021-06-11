@@ -22,6 +22,8 @@ import com.example.ecommerce.Adapter.MyWishlistAdapter;
 import com.example.ecommerce.Fragments.MyCartFragment;
 import com.example.ecommerce.Helper.Constaints;
 import com.example.ecommerce.Helper.SharedPrefManager;
+import com.example.ecommerce.Helper.WishlistSharedPref;
+import com.example.ecommerce.Model.ModelProducts;
 import com.example.ecommerce.Model.MyCartModel;
 import com.example.ecommerce.Model.MyWishlistModel;
 import com.example.ecommerce.R;
@@ -55,15 +57,17 @@ public class DeliveryActivity extends AppCompatActivity {
     public static final int SELECT_ADDRESS=0;
     private TextView selling_price, extra_discount, special_price,shipping_fee;
 
-    private TextView shipping_address,shippling_phone, total_amount_price;
-    String address, phone;
+    private TextView shipping_address,shippling_phone,shippling_pincode, total_amount_price;
+    String address, phone,pinArea;
+
+    boolean checkadd=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delivery);
         /////////////////////////////////////
-        SharedPrefManager.getInstance(getApplicationContext()).getAddress(Constaints.current_user);
+//        SharedPrefManager.getInstance(getApplicationContext()).getAddress(Constaints.current_user);
 
         deliveryRecyclerview=findViewById(R.id.delivery_recyclerview);
         changeOrAddNewAddressBtn=findViewById(R.id.change_or_add_new_adddress);
@@ -75,7 +79,18 @@ public class DeliveryActivity extends AppCompatActivity {
         linear_vpa_enter=findViewById(R.id.linear_vpa_enter);
         shipping_address = findViewById(R.id.shipping_address);
         shippling_phone = findViewById(R.id.shipping_phone_no);
-        checkAddressInDatabase(Constaints.current_user);
+        shippling_pincode = findViewById(R.id.shipping_pincode);
+
+        if (checkadd) {
+            checkAddressInDatabase(Constaints.current_user);
+        }else {
+            addData();
+        }
+        Log.d("Address my:",WishlistSharedPref.getInstance(getApplicationContext()).getAddress("ADDRESS"));
+        Log.d("Phone my:",WishlistSharedPref.getInstance(getApplicationContext()).getPhone("PHONE"));
+        Log.d("Pincode my:",WishlistSharedPref.getInstance(getApplicationContext()).getPincode("PINCODE"));
+
+
 //      price details amount portion
         selling_price = findViewById(R.id.total_amount_selling_price);
         extra_discount = findViewById(R.id.total_extra_discount_price);
@@ -137,6 +152,15 @@ public class DeliveryActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        shipping_address.setText(WishlistSharedPref.getInstance(getApplicationContext()).getAddress("ADDRESS"));
+        shippling_phone.setText(WishlistSharedPref.getInstance(getApplicationContext()).getPhone("PHONE"));
+        shippling_pincode.setText("-"+WishlistSharedPref.getInstance(getApplicationContext()).getPincode("PINCODE"));
+
     }
 
     public void getCartDataa() {
@@ -202,6 +226,7 @@ public class DeliveryActivity extends AppCompatActivity {
     }
 
     public void checkAddressInDatabase(String id) {
+        checkadd=true;
         FirebaseFirestore.getInstance().collection("user_address").document(Constaints.current_user).collection("address").document("address1").get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -210,12 +235,14 @@ public class DeliveryActivity extends AppCompatActivity {
                             DocumentSnapshot documentSnapshot = task.getResult();
                             address = documentSnapshot.getString("address");
                             phone = documentSnapshot.getString("phone");
+                            pinArea = documentSnapshot.getString("phone");
+                            WishlistSharedPref.getInstance(getApplicationContext()).setAddress(address,pinArea,phone);
+
                             Log.d("address",documentSnapshot.getString("address"));
                             Log.d("phone",documentSnapshot.getString("phone"));
                             Log.d("hello","hello hello");
-                            shipping_address.setText("address: " +address);
-                            shippling_phone.setText(phone);
 
+                            addData();
                         }else {
                             String error=task.getException().getMessage();
                             Toast.makeText(getApplicationContext(),"Add Address", Toast.LENGTH_SHORT).show();
@@ -223,4 +250,11 @@ public class DeliveryActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    public void addData() {
+        shipping_address.setText(WishlistSharedPref.getInstance(getApplicationContext()).getAddress("ADDRESS"));
+        shippling_phone.setText(WishlistSharedPref.getInstance(getApplicationContext()).getPhone("PHONE"));
+        shippling_pincode.setText("-"+WishlistSharedPref.getInstance(getApplicationContext()).getPincode("PINCODE"));
+    }
+
 }

@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import com.example.ecommerce.Adapter.CategoryAdapter;
 import com.example.ecommerce.Adapter.ProductAdapter;
+import com.example.ecommerce.Helper.SharedPrefManager;
+import com.example.ecommerce.Helper.WishlistSharedPref;
 import com.example.ecommerce.Model.CategoryModel;
 import com.example.ecommerce.Model.ModelProducts;
 import com.example.ecommerce.Model.SliderModel;
@@ -144,15 +146,6 @@ public class HomeFragment extends Fragment {
 
                            }
 
-
-                           //sliderModels.get(0);
-//                           String[] image = {};
-//                          int a = documentSnapshot.get("my_img").toString().length();
-//                           for (int i = 0; i<((ArrayList<SliderModel>) documentSnapshot.get("my_img")).toArray().length; i++){
-//                               sliderModelList.
-//                           }
-////                           sliderModelList.add(sliderModels.get());
-
                            Log.d("banner images", sliderModelList.toString());
 
 
@@ -168,7 +161,7 @@ public class HomeFragment extends Fragment {
    }
    ///////////////viewpage function//////////////
 
-    public void getProducts(final int pos, String p_doc, String p_collection)
+    public void getProducts(final int pos, final String p_doc, final String p_collection)
     {
         firebaseFirestore.collection("CATEGORIES")
                 .document(p_doc).collection(p_collection).get()
@@ -205,15 +198,16 @@ public class HomeFragment extends Fragment {
                                 case 0:
                                     productAdapter = new ProductAdapter(getActivity(),modelProductsList, 0);
                                     grid.setAdapter(productAdapter);
+                                    SharedPrefManager.getInstance(getActivity()).setMoreHomeProduct("CATEGORIES",p_doc,p_collection);
                                     break;
                                 case 1:
                                     productAdapter = new ProductAdapter(getActivity(),modelProductsList1, 1);
                                     horizontal.setAdapter(productAdapter);
-                                    break;
+                                    SharedPrefManager.getInstance(getActivity()).setMoreHomeProduct("CATEGORIES",p_doc,p_collection);                                    break;
                                 case 2:
                                     productAdapter = new ProductAdapter(getActivity(),modelProductsList2, 2);
                                     vertical.setAdapter(productAdapter);
-                                    break;
+                                    SharedPrefManager.getInstance(getActivity()).setMoreHomeProduct("CATEGORIES",p_doc,p_collection);                                    break;
                             }
                         }
                     }

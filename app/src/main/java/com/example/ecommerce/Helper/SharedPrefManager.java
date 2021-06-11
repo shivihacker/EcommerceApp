@@ -135,6 +135,56 @@ public void logout() {
         return value;
     }
 
+    public void setProductPath(String p_collection, String p_doc,String sub_p_collection,String sub_p_doc,String super_sub_p_collection){
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("p_collection", p_collection);
+        editor.putString("p_doc", p_doc);
+        editor.putString("sub_p_collection", sub_p_collection);
+        editor.putString("sub_p_doc", sub_p_doc);
+        editor.putString("super_sub_p_doc", super_sub_p_collection);
+        editor.apply();
+        Log.d("WishlistSharedData"," "+p_doc+" "+p_collection);
+    }
+    public void setMoreHomeProduct(String p_collection, String p_doc,String sub_p_collection){
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("p_collection", p_collection);
+        editor.putString("p_doc", p_doc);
+        editor.putString("sub_p_collection", sub_p_collection);
+        editor.apply();
+        Log.d("WishlistSharedData"," "+p_doc+" "+p_collection);
+    }
+    public String get_p_doc(String key) {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String value = sharedPreferences.getString(key,"");
+
+        return value;
+    }
+    public String get_p_collection(String key) {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String value = sharedPreferences.getString(key,"");
+
+        return value;
+    }
+    public String get_sub_p_doc(String key) {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String value = sharedPreferences.getString(key,"");
+
+        return value;
+    }
+    public String get_sub_p_collection(String key) {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String value = sharedPreferences.getString(key,"");
+
+        return value;
+    }
+    public String get_super_sub_p_collection(String key) {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String value = sharedPreferences.getString(key,"");
+
+        return value;
+    }
 }
 
 

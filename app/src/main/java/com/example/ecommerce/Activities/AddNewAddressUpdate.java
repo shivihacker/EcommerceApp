@@ -150,7 +150,7 @@ public class AddNewAddressUpdate extends AppCompatActivity {
                 .document(Constaints.current_user).collection("address").document(addresss);
         _reference.set(productData).isSuccessful();
 
-        Intent i = new Intent(AddNewAddressUpdate.this,DeliveryActivity.class);
+        Intent i = new Intent(AddNewAddressUpdate.this,MyAddressAct.class);
         startActivity(i);
     }
 }
