@@ -89,7 +89,7 @@ public class CategoryItemListActivity extends AppCompatActivity {
         categoryRecycler.setAdapter(productAdapter);
         if (mobile_position==1){
             Log.d("mobilebaifbaa",""+Constaints.category_position);
-            mobileProduct();
+            getProducts("MOBILES","mobile_category","sub_category");
         }else if (Constaints.category_position==2){
             if (pos==0){
                 getProducts("FASHION","fashion_category","mens");
@@ -181,37 +181,6 @@ public class CategoryItemListActivity extends AppCompatActivity {
                         } else {
                             String error = task.getException().getMessage();
                             Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
-    public void mobileProduct() {
-        firebaseFirestore.collection("CATEGORIES")
-                .document("MOBILES").collection("products").get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()) {
-                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                                ModelProducts modelProducts = new ModelProducts(documentSnapshot.getString("id"),
-                                        documentSnapshot.getString("p_name"),
-                                        documentSnapshot.getString("p_rating"),
-                                        documentSnapshot.getString("p_price"),
-                                        documentSnapshot.getString("p_date"),
-                                        documentSnapshot.getString("p_desc"),
-                                        documentSnapshot.getString("p_title"),
-                                        documentSnapshot.getString("img"),
-                                        documentSnapshot.getString("p_brand"),
-                                        documentSnapshot.getString("p_review"));
-                                modelProductsList.add(modelProducts);
-                                Log.d("name", modelProducts.getImage());
-                            }
-                            SharedPrefManager.getInstance(getApplicationContext()).setMoreHomeProduct("CATEGORIES","MOBILES","products");                            productAdapter.notifyDataSetChanged();
-//                            productAdapter=new ProductAdapter(modelProductsList,0);
-//                            grid.setAdapter(productAdapter);
-                        }else {
-                            String error=task.getException().getMessage();
-                            Toast.makeText(getApplicationContext(),error, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

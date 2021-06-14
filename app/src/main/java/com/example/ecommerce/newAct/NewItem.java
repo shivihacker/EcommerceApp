@@ -57,8 +57,14 @@ public class NewItem extends AppCompatActivity {
          id = i.getStringExtra("id");
         Intent recyclerintent=getIntent();
         recyclerviewPosition=recyclerintent.getIntExtra("recyclerview_position",0);
+        Intent selection=getIntent();
+        int select=selection.getIntExtra("SELECTION",0);
+
         Constaints.recycler_position=recyclerviewPosition;
         Constaints.product_id = id;
+        Constaints.selection_position = select;
+        Log.d("selection_categ",""+Constaints.selection_position);
+
         // filterProductData(id);
         Log.d("product_id", Constaints.product_id);
 

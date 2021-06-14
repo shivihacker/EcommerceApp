@@ -142,7 +142,7 @@ public void logout() {
         editor.putString("p_doc", p_doc);
         editor.putString("sub_p_collection", sub_p_collection);
         editor.putString("sub_p_doc", sub_p_doc);
-        editor.putString("super_sub_p_doc", super_sub_p_collection);
+        editor.putString("super_sub_p_collection", super_sub_p_collection);
         editor.apply();
         Log.d("WishlistSharedData"," "+p_doc+" "+p_collection);
     }

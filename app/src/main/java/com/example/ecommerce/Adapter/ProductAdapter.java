@@ -36,6 +36,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     Context ctx;
     List<String> wishlist;
     FirebaseFirestore firebaseFirestore;
+    public static final int CATEGORY_LIST=1;
+    public static final int HOME_LIST=0;
 
     public ProductAdapter(Context ctx,ArrayList<ModelProducts> modelProductsList, int i) {
         this.ctx = ctx;
@@ -83,6 +85,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                     Intent intent=new Intent(itemView.getContext(), NewItem.class);
                     intent.putExtra("id",modelProductsList.get(position).getCaregoryId());
                     intent.putExtra("recyclerview_position",i);
+                    intent.putExtra("SELECTION",HOME_LIST);
                     itemView.getContext().startActivity(intent);
                 }
             });
@@ -99,6 +102,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                     Intent intent=new Intent(itemView.getContext(), NewItem.class);
                     intent.putExtra("id",modelProductsList.get(position).getCaregoryId());
                     intent.putExtra("recyclerview_position",i);
+                    intent.putExtra("SELECTION",HOME_LIST);
                     itemView.getContext().startActivity(intent);
                 }
             });
@@ -114,6 +118,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                     Intent intent=new Intent(itemView.getContext(), NewItem.class);
                     intent.putExtra("id",modelProductsList.get(position).getCaregoryId());
                     intent.putExtra("recyclerview_position",i);
+                    intent.putExtra("SELECTION",HOME_LIST);
                     itemView.getContext().startActivity(intent);
                 }
             });
@@ -132,6 +137,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                     Intent intent=new Intent(itemView.getContext(), NewItem.class);
                     intent.putExtra("id",modelProductsList.get(position).getCaregoryId());
                     intent.putExtra("recyclerview_position",i);
+                    intent.putExtra("SELECTION",CATEGORY_LIST);
                     itemView.getContext().startActivity(intent);
                 }
             });

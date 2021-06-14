@@ -150,7 +150,7 @@ public class DetailsFragment extends Fragment {
 
             if (Constaints.mobile_category_position==1){
                 Log.d("mobilebaifbaa",""+Constaints.category_position);
-                categMobProductData(Constaints.product_id);
+                categoryProductData("MOBILES","mobile_category","sub_category",Constaints.product_id);
             }else if (Constaints.category_position==2){
 
                 if (Constaints.category_product_position==0){

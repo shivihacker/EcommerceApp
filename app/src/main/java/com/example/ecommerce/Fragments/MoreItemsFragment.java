@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ecommerce.Adapter.MoreItemAdapter;
+import com.example.ecommerce.Helper.Constaints;
 import com.example.ecommerce.Helper.SharedPrefManager;
 import com.example.ecommerce.Helper.WishlistSharedPref;
 import com.example.ecommerce.Model.ModelProducts;
@@ -29,6 +30,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+import static com.example.ecommerce.Adapter.ProductAdapter.CATEGORY_LIST;
+import static com.example.ecommerce.Adapter.ProductAdapter.HOME_LIST;
+
 public class MoreItemsFragment extends Fragment {
 
     RecyclerView newvertical_more;
@@ -37,8 +41,6 @@ public class MoreItemsFragment extends Fragment {
     FirebaseFirestore firebaseFirestore;
     private ArrayList<ModelProducts> modelProductsList;
     private MoreItemAdapter myAdapter;
-    private int mode=1;
-
 
     @Nullable
     @Override
@@ -47,26 +49,36 @@ public class MoreItemsFragment extends Fragment {
        View view = inflater.inflate(R.layout.fragment_more_item, container, false);
        newvertical_more = view.findViewById(R.id.newvertical_more);
        firebaseFirestore=FirebaseFirestore.getInstance();
+
+       int selection= Constaints.selection_position;
+       Log.d("select_home",""+selection);
+
        modelProductsList=new ArrayList<>();
 //        RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(getActivity());
         newvertical_more.setLayoutManager(new LinearLayoutManager(getActivity()));
         newvertical_more.setHasFixedSize(true);
         myAdapter=new MoreItemAdapter(getActivity(),modelProductsList);
 //        newvertical_more.setAdapter(myAdapter);
+        String p_collection= SharedPrefManager.getInstance(getActivity()).get_p_doc("p_collection");
         String p_document= SharedPrefManager.getInstance(getActivity()).get_p_doc("p_doc");
-        //String p_collection= SharedPrefManager.getInstance(getActivity()).get_p_doc("p_collection");
         String sub_p_collection= SharedPrefManager.getInstance(getActivity()).get_p_doc("sub_p_collection");
-        String sub_p_doc= SharedPrefManager.getInstance(getActivity()).get_p_doc("sub_p_doc");
 
-            getMoreHomeProducts(p_document,sub_p_collection);
+
+        if (selection==HOME_LIST){
+            getMoreHomeProducts(p_collection,p_document,sub_p_collection);
+        }else if (selection==CATEGORY_LIST){
+            String sub_p_doc= SharedPrefManager.getInstance(getActivity()).get_p_doc("sub_p_doc");
+            String super_sub_p_collection= SharedPrefManager.getInstance(getActivity()).get_p_doc("super_sub_p_collection");
+            getMoreProducts(p_collection,p_document,sub_p_collection,sub_p_doc,super_sub_p_collection);
+        }
         return view;
 
 
     }
 
-    public void getMoreProducts(String p_doc, String p_collection,String collection_type) {
-        firebaseFirestore.collection("CATEGORIES")
-                .document(p_doc).collection(p_collection).document(collection_type).collection("products").get()
+    public void getMoreProducts(String p_collection,String p_doc, String sub_p_collection,String collection_type,String products) {
+        firebaseFirestore.collection(p_collection)
+                .document(p_doc).collection(sub_p_collection).document(collection_type).collection(products).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -100,9 +112,9 @@ public class MoreItemsFragment extends Fragment {
                     }
                 });
     }
-    public void getMoreHomeProducts(String p_doc, String p_collection) {
-        firebaseFirestore.collection("CATEGORIES")
-                .document(p_doc).collection(p_collection).get()
+    public void getMoreHomeProducts(String p_collection,String p_doc, String sub_p_collection) {
+        firebaseFirestore.collection(p_collection)
+                .document(p_doc).collection(sub_p_collection).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {

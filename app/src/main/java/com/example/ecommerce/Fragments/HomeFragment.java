@@ -192,23 +192,31 @@ public class HomeFragment extends Fragment {
                                 }
                                 Log.d("name", modelProducts.getImage());
                             }
+                            SharedPrefManager.getInstance(getActivity()).setMoreHomeProduct("CATEGORIES",p_doc,p_collection);
+
 //                            productAdapter=new ProductAdapter(modelProductsList,0);
 //                            grid.setAdapter(productAdapter);
                             switch (pos) {
                                 case 0:
                                     productAdapter = new ProductAdapter(getActivity(),modelProductsList, 0);
                                     grid.setAdapter(productAdapter);
-                                    SharedPrefManager.getInstance(getActivity()).setMoreHomeProduct("CATEGORIES",p_doc,p_collection);
+         //                           SharedPrefManager.getInstance(getActivity()).setMoreHomeProduct("CATEGORIES",p_doc,p_collection);
                                     break;
                                 case 1:
                                     productAdapter = new ProductAdapter(getActivity(),modelProductsList1, 1);
                                     horizontal.setAdapter(productAdapter);
-                                    SharedPrefManager.getInstance(getActivity()).setMoreHomeProduct("CATEGORIES",p_doc,p_collection);                                    break;
+       //                             SharedPrefManager.getInstance(getActivity()).setMoreHomeProduct("CATEGORIES",p_doc,p_collection);
+                                    break;
                                 case 2:
                                     productAdapter = new ProductAdapter(getActivity(),modelProductsList2, 2);
                                     vertical.setAdapter(productAdapter);
-                                    SharedPrefManager.getInstance(getActivity()).setMoreHomeProduct("CATEGORIES",p_doc,p_collection);                                    break;
+     //                               SharedPrefManager.getInstance(getActivity()).setMoreHomeProduct("CATEGORIES",p_doc,p_collection);
+                                    break;
                             }
+                            SharedPrefManager.getInstance(getActivity()).setMoreHomeProduct("CATEGORIES",p_doc,p_collection);
+
+                            productAdapter.notifyDataSetChanged();
+
                         }
                     }
                 });
