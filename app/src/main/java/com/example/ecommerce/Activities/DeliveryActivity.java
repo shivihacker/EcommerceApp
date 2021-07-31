@@ -40,13 +40,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.example.ecommerce.Fragments.MyCartFragment.CART_ITEM;
+
 public class DeliveryActivity extends AppCompatActivity {
     private RecyclerView deliveryRecyclerview;
     private Button changeOrAddNewAddressBtn;
     private TextView totalAmount;
     private ImageView upi_selection_arrow;
     private LinearLayout paymentOptionBtn,upi_option,linear_vpa_enter,googlepay_option;
-    private int count;
+    private int count,items;
     private double cuttedPrice;
     private long coupons;
     FirebaseFirestore firebaseFirestore;
@@ -112,6 +114,7 @@ public class DeliveryActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle("Delivery");
 
+        if (items==CART_ITEM){}
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         firebaseFirestore= FirebaseFirestore.getInstance();
@@ -142,14 +145,14 @@ public class DeliveryActivity extends AppCompatActivity {
         paymentOptionBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent=new Intent(getApplicationContext(),GooglePayMethod.class);
+                startActivity(intent);
             }
         });
         googlepay_option.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),GooglePayMethod.class);
-                startActivity(intent);
+
             }
         });
     }

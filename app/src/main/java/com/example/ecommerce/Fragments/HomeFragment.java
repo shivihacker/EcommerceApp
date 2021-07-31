@@ -99,7 +99,7 @@ public class HomeFragment extends Fragment {
 //        ViewpageAdapter viewpageAdapter=new ViewpageAdapter(getActivity());
 //        viewpage.setAdapter(viewpageAdapter);
 //        indicator.setViewPager(viewpage);
-        sliderModelList=new ArrayList<SliderModel>();
+        sliderModelList=new ArrayList<>();
         //list=new ArrayList<>();
         sliderHomeAdapter=new SliderHomeAdapter(sliderModelList);
         viewpage.setClipToPadding(false);

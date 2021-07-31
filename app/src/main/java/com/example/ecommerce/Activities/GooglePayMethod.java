@@ -38,13 +38,9 @@ import java.util.HashMap;
 public class GooglePayMethod extends AppCompatActivity implements PaymentResultListener {
 
     EditText amount, note, email, mobileNo;
-    private OrderFragment orderFragment;
-    private FragmentManager fragmentManager;
-    private FragmentTransaction fragmentTransaction;
     Button send;
     double amt;
     String TAG ="main";
-    final int UPI_PAYMENT = 0;
     String uname,value,totalAmount;
 
     @Override

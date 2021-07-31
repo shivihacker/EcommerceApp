@@ -53,11 +53,12 @@ public class MyCartFragment extends Fragment {
     private int count;
     private double cuttedPrice;
     private long coupons;
+    public static final int CART_ITEM=1;
     List<MyCartModel> myCartModelList;
     CartAdapter cartAdapter;
     FirebaseFirestore firebaseFirestore;
     List<AddressModal> addressModalList;
-    public static boolean addressSelected =false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -200,6 +201,7 @@ public class MyCartFragment extends Fragment {
                             if(documentSnapshot.exists())
                             {
                                 Intent intent=new Intent(getActivity(),DeliveryActivity.class);
+                                intent.putExtra("ITEMS",CART_ITEM);
                                 startActivity(intent);
 
                             }else{

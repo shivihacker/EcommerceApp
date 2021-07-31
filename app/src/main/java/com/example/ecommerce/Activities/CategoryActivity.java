@@ -34,8 +34,7 @@ import java.util.List;
 import me.relex.circleindicator.CircleIndicator;
 
 public class CategoryActivity extends AppCompatActivity {
-    CircleIndicator indicator;
-    ViewPager viewpage;
+
     private RecyclerView categoryItemRecyclerview;
     private CategoryAdapter categoryAdapter;
     private List<CategoryModel> categoryModelsList;
@@ -45,6 +44,7 @@ public class CategoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
+
         Toolbar toolbar=(Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         String title=getIntent().getStringExtra("CategoryName");
@@ -55,8 +55,6 @@ public class CategoryActivity extends AppCompatActivity {
         Constaints.category_position=pos;
         Log.d("Position Of Element", "" + pos);
 
-        viewpage=findViewById(R.id.viewpage);
-        indicator=findViewById(R.id.indicator);
         firebaseFirestore=FirebaseFirestore.getInstance();
 
         ////////viewPager///////////

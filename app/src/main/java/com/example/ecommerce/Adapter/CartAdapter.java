@@ -60,7 +60,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     private int count;
     private double cuttedPrice;
     String totalSum;
-    String number;  //////////////used in bindViewHolder in i==1
     TextView totalAmount;
     private long coupons;
     int i;
@@ -176,12 +175,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 //                }
 //            });
             /////////////////////////////
-            holder.deliverCart_number_quantity.setText(""+count);
+            //holder.deliverCart_number_quantity.setText(""+count);
             Picasso.get().load(myCartModelList.get(position).getC_img()).into(holder.deliveryCart_productImage);
 
             if(quantity == 1)
             {
-                holder.mycart_number_quantity.setText(String.valueOf(quantity));
+                holder.deliverCart_number_quantity.setText(String.valueOf(quantity));
             }
 
             holder.itemView.findViewById(R.id.mycart_increase_sign).setOnClickListener(new View.OnClickListener() {
@@ -273,7 +272,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 deliveryCart_removeItem = itemView.findViewById(R.id.mycart_remove_items);
                 deliveryCart_productName = itemView.findViewById(R.id.mycart_product_name);
                 deliveryCart_productPrice = itemView.findViewById(R.id.mycart_product_price);
-            }
+           }
 
         }
     }
@@ -331,8 +330,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                     }
                 });
     }
-    public void updateAllDataTotalAmount()
-    {
+    public void updateAllDataTotalAmount() {
         firebaseFirestore.collection("whishlist")
                 .document(Constaints.current_user).collection("my_cart")
                 .get()

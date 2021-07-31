@@ -20,14 +20,12 @@
         <activity android:name=".Activities.AddressForm" />
         <activity android:name=".Activities.CategoryItemListActivity" />
         <activity android:name=".Activities.DeliveryActivity" />
-        <activity android:name=".Activities.OrderDetailsActivity" />
         <activity android:name=".Activities.CategoryActivity" />
         <activity android:name=".Activities.EditProfile" />
         <activity android:name=".Activities.ForgetPassActivity" />
         <activity android:name=".newAct.NewItem" />
         <activity android:name=".Activities.ViewMore" />
         <activity android:name=".Activities.ProfilePage" />
-        <activity android:name=".Activities.Viewallreview" />
         <activity android:name=".Activities.Reviewitems" />
         <activity android:name=".Activities.MoreItem" />
         <activity android:name=".Item" />

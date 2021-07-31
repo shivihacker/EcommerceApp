@@ -53,7 +53,7 @@ public class MyWishListFragment extends Fragment {
         myWishlistRecyclerview.setLayoutManager(linearLayoutManager);
         wishlist=new ArrayList<>();
         wishlistModelList=new ArrayList<>();
-        myWishlistAdapter=new MyWishlistAdapter(wishlistModelList);
+        myWishlistAdapter=new MyWishlistAdapter(getContext(),wishlistModelList);
         myWishlistRecyclerview.setAdapter(myWishlistAdapter);
 //        myWishlistAdapter.notifyDataSetChanged();
         return view;
@@ -82,7 +82,8 @@ public class MyWishListFragment extends Fragment {
 //                                {
 //                                    e.printStackTrace();
 //                                }
-                                wishlistModelList.add(new MyWishlistModel(documentSnapshot.get("product_image").toString(),
+                                wishlistModelList.add(new MyWishlistModel(documentSnapshot.get("product_id").toString(),
+                                        documentSnapshot.get("product_image").toString(),
                                         documentSnapshot.getString("product_title"),
                                         coupans,
                                         documentSnapshot.getString("product_rating"),

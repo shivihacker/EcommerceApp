@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.ecommerce.Activities.OrderDetailsActivity;
 import com.example.ecommerce.Model.MyOrderItemModel;
 import com.example.ecommerce.R;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -79,26 +78,10 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
                 orderItemImage=itemView.findViewById(R.id.order_item_image);
                 orderItemName=itemView.findViewById(R.id.order_item_name);
                 orderItemDeliveryStatus=itemView.findViewById(R.id.order_item_status);
-
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent orderDetailedIntent=new Intent(itemView.getContext(), OrderDetailsActivity.class);
-                        itemView.getContext().startActivity(orderDetailedIntent);
-                    }
-                });
             }else if (i==1){
                 orderItemImage=itemView.findViewById(R.id.order_item_image);
                 orderItemName=itemView.findViewById(R.id.order_item_name);
                 orderItemDeliveryStatus=itemView.findViewById(R.id.order_item_status);
-
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent orderDetailedIntent=new Intent(itemView.getContext(), OrderDetailsActivity.class);
-                        itemView.getContext().startActivity(orderDetailedIntent);
-                    }
-                });
             }
         }
         private void setData(String title){

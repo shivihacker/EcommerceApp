@@ -1,5 +1,7 @@
 package com.example.ecommerce.Adapter;
 
+import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,18 +13,26 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ecommerce.Helper.Constaints;
+import com.example.ecommerce.Model.MyCartModel;
 import com.example.ecommerce.Model.MyWishlistModel;
 import com.example.ecommerce.R;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MyWishlistAdapter extends RecyclerView.Adapter<MyWishlistAdapter.ViewHolder> {
 
     private List<MyWishlistModel> myWishlistModelList;
+    Context context;
+    List<String> wishitemlist;
 
-    public MyWishlistAdapter(List<MyWishlistModel> myWishlistModelList) {
+    public MyWishlistAdapter(Context context,List<MyWishlistModel> myWishlistModelList) {
+        this.context=context;
         this.myWishlistModelList = myWishlistModelList;
+        wishitemlist = new ArrayList<String>();
     }
 
     @NonNull
@@ -33,7 +43,11 @@ public class MyWishlistAdapter extends RecyclerView.Adapter<MyWishlistAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyWishlistAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyWishlistAdapter.ViewHolder holder, final int position) {
+        final MyWishlistModel wishlistModel = myWishlistModelList.get(position);
+        final String p_id=wishlistModel.getId();
+        wishitemlist.add(p_id);
+        Log.d("wishlist deleteee",p_id);
         String title=myWishlistModelList.get(position).getProductTitle();
         long freeCoupons=myWishlistModelList.get(position).getFreeCoupons();
         String cuttedPrice=myWishlistModelList.get(position).getCuttedPrice();
@@ -43,6 +57,24 @@ public class MyWishlistAdapter extends RecyclerView.Adapter<MyWishlistAdapter.Vi
         String paymentMethods=myWishlistModelList.get(position).getPaymentMethod();
         Picasso.get().load(myWishlistModelList.get(position).getProductImage()).into(holder.produtImage);
         holder.setData(title,freeCoupons,rating,totalRatings,productPrice,cuttedPrice,paymentMethods);
+
+        holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show();
+                if (wishitemlist!=null){
+
+                    FirebaseFirestore.getInstance().collection("whishlist").document(Constaints.current_user)
+                            .collection("My_Wishlist").document(p_id).delete();
+                    Toast.makeText(context,"Data deleted", Toast.LENGTH_SHORT).show();
+
+                    myWishlistModelList.remove(position);
+                    notifyDataSetChanged();
+
+                }
+
+            }
+        });
     }
 
     @Override

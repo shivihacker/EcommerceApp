@@ -161,30 +161,7 @@ public void logout() {
 
         return value;
     }
-    public String get_p_collection(String key) {
-        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String value = sharedPreferences.getString(key,"");
 
-        return value;
-    }
-    public String get_sub_p_doc(String key) {
-        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String value = sharedPreferences.getString(key,"");
-
-        return value;
-    }
-    public String get_sub_p_collection(String key) {
-        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String value = sharedPreferences.getString(key,"");
-
-        return value;
-    }
-    public String get_super_sub_p_collection(String key) {
-        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String value = sharedPreferences.getString(key,"");
-
-        return value;
-    }
 }
 
 

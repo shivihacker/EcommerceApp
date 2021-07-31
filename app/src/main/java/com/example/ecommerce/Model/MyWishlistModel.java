@@ -1,6 +1,7 @@
 package com.example.ecommerce.Model;
 
 public class MyWishlistModel {
+    private String id;
     private String productImage;
     private String productTitle;
     private long freeCoupons;
@@ -11,8 +12,9 @@ public class MyWishlistModel {
     private String paymentMethod;
     private String colorCode;
 
-    public MyWishlistModel(String productImage, String productTitle, long freeCoupons, String rating,
+    public MyWishlistModel(String id,String productImage, String productTitle, long freeCoupons, String rating,
                            String totalRating, String productPrice, String cuttedPrice, String paymentMethod,String colorCode) {
+        this.id=id;
         this.productImage = productImage;
         this.productTitle = productTitle;
         this.freeCoupons = freeCoupons;
@@ -22,6 +24,13 @@ public class MyWishlistModel {
         this.cuttedPrice = cuttedPrice;
         this.paymentMethod = paymentMethod;
         this.colorCode=colorCode;
+    }
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getProductImage() {

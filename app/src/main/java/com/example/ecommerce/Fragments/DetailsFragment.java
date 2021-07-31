@@ -59,8 +59,9 @@ public class DetailsFragment extends Fragment {
     private FloatingActionButton addToWishlist;
     private ElasticButton buyNow, addToCart;
     private static boolean ALREADY_ADDED_TO_WISHLIST=false;
+    public static final int BUY_ITEM=0;
     List<String> wishlist;
-    List<MyWishlistModel> wishlistModelList=new ArrayList<MyWishlistModel>();
+    List<MyWishlistModel> wishlistModelList=new ArrayList<>();
     ArrayList<SliderModel> sliderModelList;
     SliderHomeAdapter sliderHomeAdapter;
     DocumentSnapshot documentSnapshot;
@@ -73,7 +74,7 @@ public class DetailsFragment extends Fragment {
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private int counter=0;
-    String i;
+    String i="1";
     int colourGrey,colourRed;
     public DetailsFragment() {
 
@@ -125,7 +126,7 @@ public class DetailsFragment extends Fragment {
 
         String mywish = WishlistSharedPref.getInstance(getActivity()).getWishlist(Constaints.product_id);
         Log.d("getWishlistProduct",""+mywish);
-        if(mywish.equals("1"))
+        if(mywish.equals(i))
         {
             addToWishlist.setImageTintList(ColorStateList.valueOf(Constaints.redColor));
         }
@@ -247,17 +248,20 @@ public class DetailsFragment extends Fragment {
 
                 }else {
                     if (ALREADY_ADDED_TO_WISHLIST) {
-                        i="0";
-                        WishlistSharedPref.getInstance(getContext()).deletewishlist(Constaints.product_id);
+                        FirebaseFirestore.getInstance().collection("whishlist").document(Constaints.current_user)
+                                .collection("My_Wishlist").document(Constaints.product_id).delete();
+                        Toast.makeText(getActivity(),"Data deleted", Toast.LENGTH_SHORT).show();
+
+                        wishlistModelList.remove(Constaints.product_id);
                         ALREADY_ADDED_TO_WISHLIST = false;
                         addToWishlist.setImageTintList(ColorStateList.valueOf(Constaints.greyColor));
-                        getProduct_AddToWishlist(i);
+                       // getProduct_AddToWishlist(i);
                     } else {
-                        i="1";
+                      //  i="1";
                         WishlistSharedPref.getInstance(getContext()).setWishlist(Constaints.product_id,i);
                         ALREADY_ADDED_TO_WISHLIST=true;
                         addToWishlist.setImageTintList(ColorStateList.valueOf(Constaints.redColor));
-                        getProduct_AddToWishlist(i);
+                        getProduct_AddToWishlist();
                     //    wishlist.add(Constaints.product_id);
                     //    Log.d("wishlistId",wishlist.get(0));
                         //Log.d("wishlistId",wishlist.get(1));
@@ -312,7 +316,9 @@ public class DetailsFragment extends Fragment {
         buyNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getProduct_AddTobBuyNow();
                 Intent intent=new Intent(getActivity(), DeliveryActivity.class);
+                intent.putExtra("ITEMS",BUY_ITEM);
                 startActivity(intent);
             }
         });
@@ -394,64 +400,6 @@ public class DetailsFragment extends Fragment {
     }
     /////////////////////homeFragment Data////////////////
 
-    ////////////////////////Category Mobile Data///////////////////////
-    public void categMobProductData(String id) {
-        firebaseFirestore.collection("CATEGORIES").document("MOBILES").collection("products").document(id).get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-
-                            DocumentSnapshot documentSnapshot = task.getResult();
-                            mid= documentSnapshot.getString("id");
-                            product_name.setText(documentSnapshot.getString("p_name"));
-
-                            w_price = documentSnapshot.getString("p_price");
-                            price.setText(documentSnapshot.getString("p_price"));
-
-                            w_rating = documentSnapshot.getString("p_rating");
-
-                            rating.setText(documentSnapshot.getString("p_rating"));
-
-                            w_review = documentSnapshot.getString("p_review");
-                            review.setText( documentSnapshot.getString("p_review"));
-
-                            documentSnapshot.getString("p_date");
-                            description.setText(documentSnapshot.getString("p_desc"));
-
-                            w_title= documentSnapshot.getString("p_title");
-
-                            w_img = documentSnapshot.getString("img");
-                            ArrayList<SliderModel> sliderModels = (ArrayList<SliderModel>) documentSnapshot.get("p_img");
-                            // sliderModelList.add(new SliderModel((String) documentSnapshot.get("b_image")));
-                            for (int i = 0; i<sliderModels.size();i++)
-                            {
-                                sliderModelList.add(sliderModels.get(i));
-                            }
-                            Log.d("product_images", sliderModelList.toString());
-                            sliderHomeAdapter.notifyDataSetChanged();
-
-                           // Log.d("list Images Of:", list.toString());
-                            documentSnapshot.getString("p_brand");
-                            for (int i=0;i<wishlist.size();i++){
-                                if (wishlist.get(i)==Constaints.product_id){
-                                    SharedPrefManager.getInstance(getActivity()).wishListItem(Constaints.product_id);
-                                    ALREADY_ADDED_TO_WISHLIST=true;
-                                    addToWishlist.setImageTintList(ColorStateList.valueOf(Constaints.redColor));
-                                }else {
-                                    ALREADY_ADDED_TO_WISHLIST=false;
-                                    addToWishlist.setImageTintList(ColorStateList.valueOf(Constaints.greyColor));
-                                }
-                            }
-                        }else {
-                            String error=task.getException().getMessage();
-                            Toast.makeText(getContext(),error, Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
-    ////////////////////////CategoryMobile Data///////////////////////
-
     ///////////////////Category Other Product Data/////////////////////////////
     public void categoryProductData(String p_doc, String p_collection,String collection_type,String id) {
         firebaseFirestore.collection("CATEGORIES").document(p_doc).collection(p_collection).document(collection_type)
@@ -529,7 +477,7 @@ public class DetailsFragment extends Fragment {
     }
 
 
-    public void getProduct_AddToWishlist(String i)
+    public void getProduct_AddToWishlist()
     {
         HashMap<String, Object> productData = new HashMap();
         productData.put("product_id", mid);
@@ -541,8 +489,25 @@ public class DetailsFragment extends Fragment {
         productData.put("cutted_price", "10000");
         productData.put("payment_method", "Cash On Delivery");
         productData.put("free_coupons", "2");
-        productData.put("selected", i);
         DocumentReference _reference = FirebaseFirestore.getInstance().collection("whishlist").document(Constaints.current_user).collection("My_Wishlist").document(mid);
+        _reference.set(productData).isSuccessful();
+    }
+
+    public void getProduct_AddTobBuyNow()
+    {
+        String count=String.valueOf(counter);
+        HashMap<String, String> productData = new HashMap();
+        productData.put("product_id", mid);
+        productData.put("p_count", count);
+        productData.put("product_title", w_title);
+        productData.put("product_price", w_price);
+        productData.put("product_image", w_img);
+        productData.put("cutted_price", "9000");
+        productData.put("coupons_applied", "false");
+        productData.put("free_coupons", "2");
+        productData.put("total_amount",""+price);
+        DocumentReference _reference = FirebaseFirestore.getInstance().collection("whishlist")
+                .document(Constaints.current_user).collection("buy_now").document(Constaints.product_id);
         _reference.set(productData).isSuccessful();
     }
 
@@ -561,35 +526,6 @@ public class DetailsFragment extends Fragment {
 //            }
         }
 
-    }
-    public void getWishlistData() {
-        firebaseFirestore.collection("whishlist").document(Constaints.current_user).collection("My_Wishlist").get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-
-                                String l =  documentSnapshot.getString("free_coupons");
-
-                                long coupans = Long.parseLong(l);
-
-                                wishlistModelList.add(new MyWishlistModel(documentSnapshot.get("product_image").toString(),
-                                        documentSnapshot.getString("product_title"),
-                                        coupans,
-                                        documentSnapshot.getString("product_rating"),
-                                        documentSnapshot.getString("total_rating"),
-                                        documentSnapshot.getString("product_price"),
-                                        documentSnapshot.getString("cutted_price"),
-                                        documentSnapshot.getString("payment_method"),
-                                        documentSnapshot.getString("selected")));
-                            }
-                        }else {
-                            String error=task.getException().getMessage();
-                            Toast.makeText(getContext(),error, Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
     }
 
 }

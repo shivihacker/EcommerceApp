@@ -61,6 +61,7 @@ public class CategoryItemListActivity extends AppCompatActivity {
         String title=getIntent().getStringExtra("CategoryName");
         getSupportActionBar().setTitle(title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         Intent i = getIntent();
         Intent mob_pos=getIntent();
         int pos = i.getIntExtra("position",0);
